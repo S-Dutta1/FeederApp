@@ -1,7 +1,8 @@
 from django.conf.urls import url
 from django.contrib import admin
+from feederpart1.views import *
 
 urlpatterns = [
 
-	url(r'^login/', views.login, name='login')
+	url(r'^login/', login, name='login')
 ]

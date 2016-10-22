@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+
 def login(request):
 	context = {}
 	template = "login.html"
