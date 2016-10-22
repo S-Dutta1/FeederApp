@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from feederpart1.urls import *
 
 urlpatterns = [
+	url(r'^Feeder/',include("feederpart1.urls")),
     url(r'^admin/', admin.site.urls),
 ]
