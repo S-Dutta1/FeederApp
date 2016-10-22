@@ -5,3 +5,8 @@ def login(request):
 	context = {}
 	template = "login.html"
 	return render(request, template, context)
+
+def register(request):
+	context = {}
+	template = "register.html"
+	return render(request, template, context)

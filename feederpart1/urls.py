@@ -5,5 +5,5 @@ from feederpart1.views import *
 urlpatterns = [
 
 	url(r'^login/', login, name='login'),
-	url(r'^register/', login, name='register')
+	url(r'^register/', register, name='register')
 ]
