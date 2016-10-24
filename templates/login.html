@@ -87,7 +87,7 @@ span.psw {
         
     <button  type="submit" class="loginbtn">Login</button>
     <button type="button" class="facbtn">Login using facebook</button>
-    <a href="http://127.0.0.1:8000/feeder/register/"><button type="button" class="loginbtn">Register</button></a>
+    <a href="{% url 'register' %}"><button type="button" class="loginbtn">Register</button></a>
     <!-- <input type="checkbox" checked="checked"> Remember me -->
     <!-- <button type="submit" class="facbtn">Login using facebook</button></a>
     <button  type="submit" class="loginbtn"> <a href="http://127.0.0.1:8000/feeder/register/">Register</a></button> -->
@@ -95,7 +95,7 @@ span.psw {
 </form>
   
    
-    <a href="http://127.0.0.1:8000/feeder/login/"><button type="button" class="cancelbtn1">Cancel</button></a>
+    <a href="="{% url 'login' %}"><button type="button" class="cancelbtn1">Cancel</button></a>
     <!-- <button type="button" >Register</button> -->
     <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
   
