@@ -73,20 +73,20 @@ span.psw {
 <h2><center>Welcome to Feeder </h2>
 <h2><center>Please Login</h2>
 
-<form action="{% url 'login' %}">
+<form role="form" action="{% url 'login' %}" method="post">{% csrf_token %}
   <div class="imgcontainer">
     <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
   </div>
 
   <div class="container">
     <label><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+    <input type="text" placeholder="Enter Username" name="user_name" required>
 
     <label><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+    <input type="password" placeholder="Enter Password" name="user_password" required>
         
     <button  type="submit" class="loginbtn">Login</button>
-    <button type="button" class="facbtn">Login using facebook</button>
+    <button type="button" class="facbtn" >Login using facebook</button>
     <a href="{% url 'register' %}"><button type="button" class="loginbtn">Register</button></a>
     <!-- <input type="checkbox" checked="checked"> Remember me -->
     <!-- <button type="submit" class="facbtn">Login using facebook</button></a>
