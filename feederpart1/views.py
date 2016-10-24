@@ -9,37 +9,26 @@ def loginform(request):
 	return render(request, template, context)
 
 def login(request):
-
-	context = {}
 	username='none'
 	password='none'
 	if request.method == 'POST':
 		myform=ContactForm(data = request.POST)
 		if myform.is_valid():
-			# myform.user_name="xxx"
 			myform=myform.cleaned_data
 			username=myform['user_name']
 			password=myform['user_password']
-			# username='abcd'
 			if Student.objects.filter(username=username).exists():
-				template = "loggedin.html"
 				real_password=Student.objects.get(username=username).password
 				if password == real_password:
-					return render(request, template, {"username":'succecfully -- username'})
+					return render(request, "loggedin.html", {"username":username})
 				else:
 					return HttpResponse('password don\'t match')
 			else:
-				return render(request, 'loggedin.html',{"username":username})
-				# return HttpResponse("<h2>username not found " + str(username) + " ............</h2>")
-
+				return render(request, 'blankMessage.html',{"message":username+' username not found.'})
 		else:
-			# template = "login.html"
-			# return render(request, template, context)
-			return HttpResponse('ERROR')
+			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:
-			# template = "login.html"
-			# return render(request, template, context)
-			return HttpResponse('ERROR 1')
+			return render(request, 'blankMessage.html',{"message":'Connection problem'})
 
 
 def register(request):
