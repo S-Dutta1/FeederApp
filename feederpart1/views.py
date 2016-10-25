@@ -39,7 +39,7 @@ def adminlogin(request):
 			password=myform['admin_password']
 			if admin_username==username:
 				if admin_password == password:
-					return render(request, "loggedin.html", {"username":username})
+					return render(request, "addcourses.html", {"courses":Course.objects.all()})
 				else:
 					return render(request, 'blankMessage.html',{"message":'password don\'t match'})
 			else:
