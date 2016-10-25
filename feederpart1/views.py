@@ -22,7 +22,28 @@ def login(request):
 				if password == real_password:
 					return render(request, "loggedin.html", {"username":username})
 				else:
-					return HttpResponse('password don\'t match')
+					return render(request, 'blankMessage.html',{"message":'password don\'t match'})
+			else:
+				return render(request, 'blankMessage.html',{"message":username+' username not found.'})
+		else:
+			return render(request, 'blankMessage.html',{"message":'Error in input'})
+	else:
+			return render(request, 'blankMessage.html',{"message":'Connection problem'})
+
+def adminlogin(request):
+	admin_username='assassin'
+	admin_password='group08'
+	if request.method == 'POST':
+		myform=AdminForm(data = request.POST)
+		if myform.is_valid():
+			myform=myform.cleaned_data
+			username=myform['admin_name']
+			password=myform['admin_password']
+			if admin_username==username:
+				if admin_password == password:
+					return render(request, "loggedin.html", {"username":username})
+				else:
+					return render(request, 'blankMessage.html',{"message":'password don\'t match'})
 			else:
 				return render(request, 'blankMessage.html',{"message":username+' username not found.'})
 		else:
@@ -31,7 +52,10 @@ def login(request):
 			return render(request, 'blankMessage.html',{"message":'Connection problem'})
 
 
+
 def register(request):
 	context = {}
 	template = "register.html"
 	return render(request, template, context)
+
+
