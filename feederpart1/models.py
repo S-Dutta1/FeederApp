@@ -22,7 +22,7 @@ class Student(models.Model):
 
 class Course(models.Model):
 	name=models.CharField(max_length=50)
-	code=models.CharField(max_length=3)
+	code=models.CharField(max_length=10)
 	students =models.ManyToManyField(Student, blank=True)
 	def __str__(self):
 		return self.name+' '+self.code

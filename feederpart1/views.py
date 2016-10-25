@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import *
-from .models import Instructor
+from .models import Instructor,Course
 
 def loginform(request):
 	return render(request, "login.html", {})
@@ -87,6 +87,29 @@ def register(request):
 			bc.save()
 			return render(request, 'blankMessage.html',{"message":username+' registered successfully.'})
 
+		else:
+			return render(request, 'blankMessage.html',{"message":'Error in input'})
+	else:
+			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
+
+
+def addcourse(request):
+	name='none'
+	code='none'
+	if request.method == 'POST':
+		myform=AddCourseForm(data = request.POST)
+		if myform.is_valid():
+			myform=myform.cleaned_data
+			name=myform['coursename'] 
+			code=myform['code']
+			if Instructor.objects.filter(name=name).exists():
+				return render(request, 'blankMessage.html',{"message":username+' coursename all ready exist.'})
+			c=Course(
+				name=name,
+				code=code
+				)
+			c.save()
+			return render(request, 'blankMessage.html',{"message":username+' registered successfully.'}) # have to change
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:
