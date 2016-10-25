@@ -100,16 +100,16 @@ def addcourse(request):
 		myform=AddCourseForm(data = request.POST)
 		if myform.is_valid():
 			myform=myform.cleaned_data
-			name=myform['coursename'] 
+			name=myform['name'] 
 			code=myform['code']
-			if Instructor.objects.filter(name=name).exists():
-				return render(request, 'blankMessage.html',{"message":username+' coursename all ready exist.'})
+			if Course.objects.filter(name=name ,code=code).exists():
+				return render(request, 'blankMessage.html',{"message":name+' '+code+' coursename all ready exist.'})
 			c=Course(
 				name=name,
 				code=code
 				)
 			c.save()
-			return render(request, 'blankMessage.html',{"message":username+' registered successfully.'}) # have to change
+			return render(request, "addcourses.html", {"courses":Course.objects.all()})
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:

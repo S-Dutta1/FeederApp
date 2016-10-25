@@ -111,13 +111,12 @@
         </div>
         {% for course in courses %}
             <div class="container">
-                <h2> {{course.name}}</h2>
-                <h2>{{course.code}}</h2>
+                <p href=""> {{course.name}} {{course.code}}</p>
             </div>
         {% endfor %}
         <div id="id01" class="modal">
             
-            <form class="modal-content animate" role="form" action="{% url 'login' %}" method="post">{% csrf_token %}
+            <form class="modal-content animate" role="form" action="{% url 'addcourse' %}" method="post">{% csrf_token %}
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                     <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
