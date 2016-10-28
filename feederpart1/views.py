@@ -104,10 +104,34 @@ def addcourse(request):
 			code=myform['code']
 			if Course.objects.filter(name=name ,code=code).exists():
 				return render(request, 'blankMessage.html',{"message":name+' '+code+' coursename all ready exist.'})
+
+			f1=feedbak(name='midsem')
+			f1.save()
+			q1=Quesion(text='How did you find the course till now?')
+			q1.save()
+			q2=Quesion(text='Rate the difficulty of the course till now?')
+			q2.save()
+			q3=Quesion(text='Rate the difficulty of midsem?')
+			q3.save()
+			f1.quesions.add(q1,q2,q3)
+			f1.save()
+
+			f2=feedbak(name='midsem')
+			f2.save()
+			q1=Quesion(text='How did you find the course overall?')
+			q1.save()
+			q2=Quesion(text='Rate the difficulty of the course overall?')
+			q2.save()
+			q3=Quesion(text='Rate the difficulty of endsem?')
+			q3.save()
+			f2.quesions.add(q1,q2,q3)
+			f2.save()
+
 			c=Course(
 				name=name,
-				code=code
+				code=code,
 				)
+			c.feedbackforms.add(f1,f2)
 			c.save()
 			return render(request, "addcourses.html", {"courses":Course.objects.all()})
 		else:
@@ -115,3 +139,9 @@ def addcourse(request):
 	else:
 			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
 
+def editfeedback(request, coursename, coursecode):
+	return render(request, "editfeedback.html", {"quesions":Course.objects.get(name=coursename,code=coursecode)})
+
+def addstudents(request):
+	return render(request, "addstudents.html", {"students":Student.objects.all()})
+	

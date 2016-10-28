@@ -16,13 +16,6 @@ class Student(models.Model):
 	def __str__(self):
 		return self.username
 
-class Course(models.Model):
-	name=models.CharField(max_length=50)
-	code=models.CharField(max_length=10)
-	students=models.ManyToManyField(Student, blank=True)
-	def __str__(self):
-		return self.name+' '+self.code
-
 class Response(models.Model):
 	rating=models.IntegerField(default=0)
 	# timestamp
@@ -35,6 +28,14 @@ class Quesion(models.Model):
 class Feedbackform(models.Model):
 	name=models.CharField(max_length=50)
 	quesions=models.ManyToManyField(Quesion,blank=True)
+
+class Course(models.Model):
+	name=models.CharField(max_length=50)
+	code=models.CharField(max_length=10)
+	students=models.ManyToManyField(Student, blank=True)
+	feedbackforms=models.ManyToManyField(Feedbackform,blank=True)
+	def __str__(self):
+		return self.name+' '+self.code
 
 	##############################################################
 	##########################   HOW TO ADD FEEDBACK 	##########
