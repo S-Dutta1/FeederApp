@@ -21,13 +21,17 @@ class Response(models.Model):
 	# timestamp
 	# student=models.OneToOne(Student) # so that one student can give feedback only once
 
-class Quesion(models.Model):
+class Question(models.Model):
 	text=models.CharField(max_length=500)
 	responses=models.ManyToManyField(Response,blank=True)
+	def __str__(self):
+		return self.text
 
 class Feedbackform(models.Model):
 	name=models.CharField(max_length=50)
-	quesions=models.ManyToManyField(Quesion,blank=True)
+	questions=models.ManyToManyField(Question,blank=True)
+	def __str__(self):
+		return self.name
 
 class Course(models.Model):
 	name=models.CharField(max_length=50)
@@ -42,14 +46,14 @@ class Course(models.Model):
 	##############################################################
 	# f=feedbak(name='form1')
 	# f.save()
-	# q1=Quesion(text='is sharat chutiya?')
+	# q1=Question(text='is sharat chutiya?')
 	# q1.save()
 	# q2 ...
 	# q2 ...
-	# f.quesions.add(q1,q2,...)
+	# f.questions.add(q1,q2,...)
 
 	# # for all students
 	# r=Response(rating=3)
 	# r.save()
-	# feedbak.quesions.all()[0].responses.add(r)
-	# len(list(feedbak.quesions.all()[0].responses.filter(rating = 5))) //will give no of responses with 5
+	# feedbak.questions.all()[0].responses.add(r)
+	# len(list(feedbak.questions.all()[0].responses.filter(rating = 5))) //will give no of responses with 5

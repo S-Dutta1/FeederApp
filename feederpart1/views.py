@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import *
-from .models import Instructor,Course
+from .models import *
 
 def loginform(request):
 	return render(request, "login.html", {})
@@ -105,32 +105,33 @@ def addcourse(request):
 			if Course.objects.filter(name=name ,code=code).exists():
 				return render(request, 'blankMessage.html',{"message":name+' '+code+' coursename all ready exist.'})
 
-			f1=feedbak(name='midsem')
+			f1=Feedbackform(name='midsem')
 			f1.save()
-			q1=Quesion(text='How did you find the course till now?')
+			q1=Question(text='How did you find the course till now?')
 			q1.save()
-			q2=Quesion(text='Rate the difficulty of the course till now?')
+			q2=Question(text='Rate the difficulty of the course till now?')
 			q2.save()
-			q3=Quesion(text='Rate the difficulty of midsem?')
+			q3=Question(text='Rate the difficulty of midsem?')
 			q3.save()
-			f1.quesions.add(q1,q2,q3)
+			f1.questions.add(q1,q2,q3)
 			f1.save()
 
-			f2=feedbak(name='midsem')
+			f2=Feedbackform(name='endsem')
 			f2.save()
-			q1=Quesion(text='How did you find the course overall?')
+			q1=Question(text='How did you find the course overall?')
 			q1.save()
-			q2=Quesion(text='Rate the difficulty of the course overall?')
+			q2=Question(text='Rate the difficulty of the course overall?')
 			q2.save()
-			q3=Quesion(text='Rate the difficulty of endsem?')
+			q3=Question(text='Rate the difficulty of endsem?')
 			q3.save()
-			f2.quesions.add(q1,q2,q3)
+			f2.questions.add(q1,q2,q3)
 			f2.save()
 
 			c=Course(
 				name=name,
 				code=code,
 				)
+			c.save()
 			c.feedbackforms.add(f1,f2)
 			c.save()
 			return render(request, "addcourses.html", {"courses":Course.objects.all()})
@@ -139,8 +140,9 @@ def addcourse(request):
 	else:
 			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
 
-def editfeedback(request, coursename, coursecode):
-	return render(request, "editfeedback.html", {"quesions":Course.objects.get(name=coursename,code=coursecode)})
+def editfeedback(request, coursename, coursecode, feedbackname):
+	questions=Course.objects.get(name=coursename,code=coursecode).feedbackforms.get(name=feedbackname).questions.all()
+	return render(request, "editfeedback.html", {"questions":questions})
 
 def addstudents(request):
 	return render(request, "addstudents.html", {"students":Student.objects.all()})
