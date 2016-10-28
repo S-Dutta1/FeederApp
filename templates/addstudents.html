@@ -68,24 +68,29 @@
     <body>
         <h2><center>Add Students Here</h2>
         <!-- <form action="{% url 'register' %}" method="post" > {% csrf_token %} -->
-        <form role="form" action="{% url 'register' %}" method="post">{% csrf_token %}
+        <form role="form" action="{% url 'addstudents' %}" method="post">{% csrf_token %}
             <div class="imgcontainer">
                 <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
             </div>
             <div class="container" >
                 <label><b>Course Name </b></label>
                 <input type="text" placeholder="Enter Course Name" name="fullname" required>
+                <h2><center>Students Name</center></h2>
                 {% for student in students %}
-                    <div class="container">
-                        <form action="demo_form.asp" method="get">
-                            <input type="checkbox" name="vehicle" value="Bike"> Bal<br>
-                            <!-- <input type="checkbox" name="vehicle" value="Car" checked> I have a car<br> -->
-                            <input type="submit" value="Submit">
-                        </form>
-                    {% endfor %}
                     
-                </div>
+                    <form action="demo_form.asp" method="get">
+                        <input type="checkbox"  name="students_name" required> {{student.username}}<br>
+                        <!-- <input type="checkbox" name="vehicle" value="Car" checked> I have a car<br> -->
+                        <button  type="submit" class="loginbtn">Submit</button>
+                    </form>
+                {% endfor %}
+                
             </div>
         </form>
     </body>
+</html>
+</div>
+</div>
+</form>
+</body>
 </html>
