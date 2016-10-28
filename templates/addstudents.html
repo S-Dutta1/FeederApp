@@ -87,16 +87,22 @@
       <div class="container" >
       <label><b>Course Name </b></label>
         <input type="text" placeholder="Enter Course Name" name="fullname" required>
-        {% for course in courses %}
-            <div class="container">
+
+        	<h2><center>Students Name</center></h2>
+
+                {% for students in students %}
+
+           
      <form action="demo_form.asp" method="get">
-  <input type="checkbox" name="vehicle" value="Bike"> Bal<br>
+  <input type="checkbox"  name="students_name" required> {{students}}<br>
+
   <!-- <input type="checkbox" name="vehicle" value="Car" checked> I have a car<br> -->
-  <input type="submit" value="Submit">
+ <button  type="submit" class="loginbtn">Submit</button>
 </form>
    {% endfor %}
      
     </form>
+    </div>
 
     </body>
     </html>
