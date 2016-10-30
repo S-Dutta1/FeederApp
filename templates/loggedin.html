@@ -4,12 +4,15 @@
 		<title>xxx</title>
 	</head>
 	<body>
-		Welcome {{username}}
+		<h1>	Welcome {{username}}</h1>
 		{% for course in courses %}
-			<div class="container">
-				<font size="4">{{course.name}} {{course.code}}</font>
+			<div>
+				<a href="">
+					<div class="container">
+						<font size="4">{{course.name}} {{course.code}}</font>
+					</div>
+				</a>
 			</div>
-			
 		{% endfor %}
 	</body>
 </html>

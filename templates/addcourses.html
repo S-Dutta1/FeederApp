@@ -3,7 +3,7 @@
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Merriweather|Playfair+Display" rel="stylesheet">
     <style>
-     input[type=text] {
+    input[type=text] {
     width: 130px;
     box-sizing: border-box;
     border: 2px solid #ccc;
@@ -11,16 +11,15 @@
     font-size: 16px;
     background-color: white;
     /*background-image: url('searchicon.png');*/
-    background-position: 10px 10px; 
+    background-position: 10px 10px;
     background-repeat: no-repeat;
     padding: 12px 20px 12px 40px;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
-}
-
-input[type=text]:focus {
+    }
+    input[type=text]:focus {
     width: 100%;
-}
+    }
     body{
     background: red; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(blue, green); /* For Safari 5.1 to 6.0 */
@@ -143,12 +142,12 @@ input[type=text]:focus {
     }
     </style>
     <body>
-    <form action="" >
- <input type='text' id='link_id'>
-<input type='button' id='link' value='Search' onClick='javascript:goTo()'>
-  
- 
-</form>
+        <form action="" >
+            <input type='text' id='link_id'>
+            <input type='button' id='link' value='Search' onClick='javascript:goTo()'>
+            
+            
+        </form>
         <h2><center>Add Courses Here</h2>
         <div style="text-align:center">
             <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Add</button>
@@ -158,12 +157,14 @@ input[type=text]:focus {
                 <div class="myDIV" id ="{{course.code}}">
                     <font size="5">{{course.name}} {{course.code}}</font>
                     <div style="text-align:right">
-                        <a href="http://127.0.0.1:8000/feeder/deletecourse/{{course.name}}/{{course.code}}">
+                        {# <a href="http://127.0.0.1:8000/feeder/deletecourse/{{course.name}}/{{course.code}}"> #}
+                        <a href="{% url 'deletecourse' course.name course.code %}">
                             <button style="width:auto;" type="submit" class="loginbtn">Delete</button>
                         </a>
                         {# <button style="width:auto;">Delete</button> #}
                         {# <button style="width:auto;", href="{% url 'addstudents' coursename=coursename coursecode=coursecode %}">Add Student</button> #}
-                        <a href="http://127.0.0.1:8000/feeder/addstudents/{{course.name}}/{{course.code}}">
+                        {# <a href="http://127.0.0.1:8000/feeder/addstudents/{{course.name}}/{{course.code}}"> #}
+                        <a href="{% url 'addstudents' course.name course.code %}">
                             <button style="width:auto;">Add Student</button>
                         </a>
                     </div>
@@ -201,12 +202,11 @@ input[type=text]:focus {
             }
             function goTo()
             {
- var str2 =document.getElementById("link_id").value ;
-    var str1 = "#";
-    var res = str1.concat(str2);
-    location.href = res;
-
-}
+            var str2 =document.getElementById("link_id").value ;
+            var str1 = "#";
+            var res = str1.concat(str2);
+            location.href = res;
+            }
             </script>
         </body>
     </html>

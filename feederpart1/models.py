@@ -12,10 +12,11 @@ class Instructor(models.Model):
 		return self.username
 
 class Student(models.Model):
-	username=models.CharField(max_length=50, unique= True)
+	username=models.CharField(max_length=50)
 	password=models.CharField(max_length=20)
+	rollno=models.CharField(max_length=20, unique= True,default=True)
 	def __str__(self):
-		return self.username
+		return self.username+':'+self.rollno[max(len(self.rollno)-3,0):len(self.rollno)]
 
 class Assignment(models.Model):
 	name=models.CharField(max_length=50)

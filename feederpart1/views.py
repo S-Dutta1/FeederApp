@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import *
 from .models import *
+import datetime
 
 def loginform(request):
 	return render(request, "login.html", {})
@@ -126,6 +127,13 @@ def addcourse(request):
 			q3.save()
 			f2.questions.add(q1,q2,q3)
 			f2.save()
+			presentdate = datetime.date.today()
+			midsemdate = presentdate.replace(month=9,day=20)
+			endsemdate = presentdate.replace(month=11,day=10)
+			a1=Assignment(name='midsem',deadline=datetime.datetime.combine(midsemdate,datetime.time(12, 0, 0)))
+			a1.save()
+			a2=Assignment(name='endsem',deadline=datetime.datetime.combine(endsemdate,datetime.time(12, 0, 0)))
+			a2.save()
 
 			c=Course(
 				name=name,
@@ -133,6 +141,7 @@ def addcourse(request):
 				)
 			c.save()
 			c.feedbackforms.add(f1,f2)
+			c.assignments.add(a1,a2)
 			c.save()
 			return render(request, "addcourses.html", {"courses":Course.objects.all()})
 		else:
