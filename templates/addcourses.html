@@ -131,7 +131,10 @@
                 <div class="myDIV">
                     <font size="5">{{course.name}} {{course.code}}</font>
                     <div style="text-align:right">
-                        <button style="width:auto;">Delete</button>
+                        <a href="http://10.5.41.211:2357/feeder/deletecourse/{{course.name}}/{{course.code}}">
+                            <button style="width:auto;" type="submit" class="loginbtn">Delete</button>
+                        </a>
+                        {# <button style="width:auto;">Delete</button> #}
                         {# <button style="width:auto;", href="{% url 'addstudents' coursename=coursename coursecode=coursecode %}">Add Student</button> #}
                         <a href="http://10.5.41.211:2357/feeder/addstudents/{{course.name}}/{{course.code}}">
                             <button style="width:auto;">Add Student</button>

@@ -145,5 +145,20 @@ def editfeedback(request, coursename, coursecode, feedbackname):
 	return render(request, "editfeedback.html", {"questions":questions})
 
 def addstudents(request, coursename, coursecode):
-	return render(request, "addstudents.html", {"students":Student.objects.all(),"coursename":coursename,"coursecode":coursecode})
+	return render(request, "addstudents.html", {"addedstudents":Course.objects.get(name=coursename,code=coursecode).students.all(),
+												"students":Student.objects.all(),
+												"coursename":coursename,
+												"coursecode":coursecode})
 	
+def addstudent(request, coursename, coursecode, studentname):
+	c=Course.objects.get(name=coursename,code=coursecode)
+	c.students.add(Student.objects.get(username=studentname))
+	c.save()
+	return render(request, "addstudents.html", {"addedstudents":Course.objects.get(name=coursename,code=coursecode).students.all(),
+												"students":Student.objects.all(),
+												"coursename":coursename,
+												"coursecode":coursecode})
+
+def deletecourse(request, coursename, coursecode):
+	Course.objects.filter(name=coursename, code=coursecode).delete()
+	return render(request, "addcourses.html", {"courses":Course.objects.all()})

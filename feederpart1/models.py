@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime    
 
 # Create your models here.
 class Instructor(models.Model):
@@ -16,6 +17,13 @@ class Student(models.Model):
 	def __str__(self):
 		return self.username
 
+class Assignment(models.Model):
+	name=models.CharField(max_length=50)
+	urllink=models.CharField(max_length=200, blank=True)
+	deadline = models.DateTimeField(default=datetime.now, blank=True)
+	def __str__(self):
+		return self.name
+
 class Response(models.Model):
 	rating=models.IntegerField(default=0)
 	# timestamp
@@ -30,6 +38,7 @@ class Question(models.Model):
 class Feedbackform(models.Model):
 	name=models.CharField(max_length=50)
 	questions=models.ManyToManyField(Question,blank=True)
+	deadline = models.DateTimeField(default=datetime.now, blank=True)
 	def __str__(self):
 		return self.name
 
@@ -38,6 +47,7 @@ class Course(models.Model):
 	code=models.CharField(max_length=10)
 	students=models.ManyToManyField(Student, blank=True)
 	feedbackforms=models.ManyToManyField(Feedbackform,blank=True)
+	assignments=models.ManyToManyField(Assignment,blank=True)
 	def __str__(self):
 		return self.name+' '+self.code
 
