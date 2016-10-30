@@ -18,7 +18,7 @@ def login(request):
 			if Instructor.objects.filter(username=username).exists():
 				real_password=Instructor.objects.get(username=username).password
 				if password == real_password:
-					return render(request, "loggedin.html", {"username":username})
+					return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
 				else:
 					return render(request, 'blankMessage.html',{"message":'password don\'t match'})
 			else:
@@ -144,6 +144,6 @@ def editfeedback(request, coursename, coursecode, feedbackname):
 	questions=Course.objects.get(name=coursename,code=coursecode).feedbackforms.get(name=feedbackname).questions.all()
 	return render(request, "editfeedback.html", {"questions":questions})
 
-def addstudents(request):
-	return render(request, "addstudents.html", {"students":Student.objects.all()})
+def addstudents(request, coursename, coursecode):
+	return render(request, "addstudents.html", {"students":Student.objects.all(),"coursename":coursename,"coursecode":coursecode})
 	

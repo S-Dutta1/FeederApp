@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet"> 
-<link href="https://fonts.googleapis.com/css?family=Merriweather|Playfair+Display" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Playfair+Display" rel="stylesheet">
     <style>
     body{
-     background-color:#ffffff;
-     background-image: url("a.jpg");
-     color: black;
+    background-color:#ffffff;
+    background-image: url("a.jpg");
+    color: black;
     }
     .myDIV {
     font-family: 'Playfair Display', serif;
@@ -15,7 +15,7 @@
     width:1200px;
     height:170px;
     box-shadow: 10px 10px 5px 5px black, 10px 20px 20px 10px grey inset;
-}
+    }
     /* Full-width input fields */
     input[type=text], input[type=password] {
     width: 100%;
@@ -128,56 +128,47 @@
         </div>
         {% for course in courses %}
             <div class="container">
-
-           
-            <div class="myDIV">
-              <font size="7">Course Name: {{course.name}}</font>
-           
-                  
-              <div style="text-align:right">
-            <button onclick="document.getElementById('').style.display='block'" style="width:auto;">Delete</button>
-        
-            <button onclick="document.getElementById('').style.display='block'" style="width:auto;">Add Student</button>
-        </div>
-        <div>
-            
-        </div>
-              
-            <font size="4"> Course Code:  {{course.code}}</font> 
-               
+                <div class="myDIV">
+                    <font size="5">{{course.name}} {{course.code}}</font>
+                    <div style="text-align:right">
+                        <button style="width:auto;">Delete</button>
+                        {# <button style="width:auto;", href="{% url 'addstudents' coursename=coursename coursecode=coursecode %}">Add Student</button> #}
+                        <a href="http://10.5.41.211:2357/feeder/addstudents/{{course.name}}/{{course.code}}">
+                            <button style="width:auto;">Add Student</button>
+                        </a>
+                    </div>
                 </div>
+            {% endfor %}
+            <div id="id01" class="modal">
+                
+                <form class="modal-content animate" role="form" action="{% url 'addcourse' %}" method="post">{% csrf_token %}
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
+                    </div>
+                    <div class="container">
+                        <label><b>Course Name</b></label>
+                        <input type="text" placeholder="Enter Course name" name="name" >
+                        <label><b>Course Code</b></label>
+                        <input type="text" placeholder="Enter Course Code" name="code" >
+                        <button type="submit">Add</button>
+                        
+                    </div>
+                    <div class="container" style="background-color:#f1f1f1">
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+                        <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
+                    </div>
+                </form>
             </div>
-        {% endfor %}
-        <div id="id01" class="modal">
-            
-            <form class="modal-content animate" role="form" action="{% url 'addcourse' %}" method="post">{% csrf_token %}
-                <div class="imgcontainer">
-                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                    <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
-                </div>
-                <div class="container">
-                    <label><b>Course Name</b></label>
-                    <input type="text" placeholder="Enter Course name" name="name" >
-                    <label><b>Course Code</b></label>
-                    <input type="text" placeholder="Enter Course Code" name="code" >
-                    <button type="submit">Add</button>
-                    
-                </div>
-                <div class="container" style="background-color:#f1f1f1">
-                    <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-                    <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
-                </div>
-            </form>
-        </div>
-        <script>
-        // Get the modal
-        var modal = document.getElementById('id01');
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-        if (event.target == modal) {
-        modal.style.display = "none";
-        }
-        }
-        </script>
-    </body>
-</html>
+            <script>
+            // Get the modal
+            var modal = document.getElementById('id01');
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+            if (event.target == modal) {
+            modal.style.display = "none";
+            }
+            }
+            </script>
+        </body>
+    </html>

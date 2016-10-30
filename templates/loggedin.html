@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>xxx</title>
-</head>
-<body>
-	Welcome {{username}}
-
-</body>
+	<head>
+		<title>xxx</title>
+	</head>
+	<body>
+		Welcome {{username}}
+		{% for course in courses %}
+			<div class="container">
+				<font size="4">{{course.name}} {{course.code}}</font>
+			</div>
+			
+		{% endfor %}
+	</body>
 </html>

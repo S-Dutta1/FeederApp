@@ -66,16 +66,15 @@
     }
     </style>
     <body>
+        <h1>{{coursename}} {{coursecode}}</h1>
         <h2><center>Add Students Here</h2>
         <!-- <form action="{% url 'register' %}" method="post" > {% csrf_token %} -->
-        <form role="form" action="{% url 'addstudents' %}" method="post">{% csrf_token %}
+        <form role="form" action="" method="post">{% csrf_token %}
             <div class="imgcontainer">
                 <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
             </div>
             <div class="container" >
-                <label><b>Course Name </b></label>
-                <input type="text" placeholder="Enter Course Name" name="coursename" required>
-                <h2><center>Students Name</center></h2>
+                <h2>Student Names</h2>
                 {% for student in students %}
                     
                     {# <form action="demo_form.asp" method="get"> #}

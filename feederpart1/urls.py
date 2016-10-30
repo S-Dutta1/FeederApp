@@ -10,6 +10,6 @@ urlpatterns = [
 	url(r'^register/', register, name='register'),
 	url(r'^adminlogin/', adminlogin, name='adminlogin'),
 	url(r'^addcourse/', addcourse, name='addcourse'),
-	url(r'^addstudents/', addstudents, name='addstudents'),
+	url(r'^addstudents/(\w+)/(\w+)/', addstudents, name='addstudents'),
 	url(r'^feedbackof/(\w+)/(\w+)/(\w+)', editfeedback, name = 'editfeedback')
 ]
