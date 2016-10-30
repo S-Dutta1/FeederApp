@@ -3,17 +3,37 @@
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Merriweather|Playfair+Display" rel="stylesheet">
     <style>
+     input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    /*background-image: url('searchicon.png');*/
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 100%;
+}
     body{
-    background-color:#ffffff;
-    background-image: url("a.jpg");
-    color: black;
+    background: red; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(blue, green); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(blue, green); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(blue, green); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(blue, green); /* Standard syntax (must be last) */
     }
     .myDIV {
     font-family: 'Playfair Display', serif;
     font-size: 45;
     background-color:white;
     width:1200px;
-    height:170px;
+    height:100px;
     box-shadow: 10px 10px 5px 5px black, 10px 20px 20px 10px grey inset;
     }
     /* Full-width input fields */
@@ -55,7 +75,8 @@
     border-radius: 50%;
     }
     .container {
-    padding: 16px;
+    
+    padding:3px;
     }
     span.psw {
     float: right;
@@ -122,21 +143,27 @@
     }
     </style>
     <body>
+    <form action="" >
+ <input type='text' id='link_id'>
+<input type='button' id='link' value='Search' onClick='javascript:goTo()'>
+  
+ 
+</form>
         <h2><center>Add Courses Here</h2>
         <div style="text-align:center">
             <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Add</button>
         </div>
         {% for course in courses %}
-            <div class="container">
-                <div class="myDIV">
+            <div class="container" >
+                <div class="myDIV" id ="{{course.code}}">
                     <font size="5">{{course.name}} {{course.code}}</font>
                     <div style="text-align:right">
-                        <a href="http://10.5.41.211:2357/feeder/deletecourse/{{course.name}}/{{course.code}}">
+                        <a href="http://127.0.0.1:8000/feeder/deletecourse/{{course.name}}/{{course.code}}">
                             <button style="width:auto;" type="submit" class="loginbtn">Delete</button>
                         </a>
                         {# <button style="width:auto;">Delete</button> #}
                         {# <button style="width:auto;", href="{% url 'addstudents' coursename=coursename coursecode=coursecode %}">Add Student</button> #}
-                        <a href="http://10.5.41.211:2357/feeder/addstudents/{{course.name}}/{{course.code}}">
+                        <a href="http://127.0.0.1:8000/feeder/addstudents/{{course.name}}/{{course.code}}">
                             <button style="width:auto;">Add Student</button>
                         </a>
                     </div>
@@ -172,6 +199,14 @@
             modal.style.display = "none";
             }
             }
+            function goTo()
+            {
+ var str2 =document.getElementById("link_id").value ;
+    var str1 = "#";
+    var res = str1.concat(str2);
+    location.href = res;
+
+}
             </script>
         </body>
     </html>
