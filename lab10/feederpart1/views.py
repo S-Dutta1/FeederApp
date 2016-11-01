@@ -89,6 +89,11 @@ def adminlogin(request):
 	else:
 			return render(request, 'blankMessage.html',{"message":'Connection problem  .'})
 
+def adminhome(request):
+	if request.user.is_authenticated:	
+		return render(request, "addcourses.html", {"courses":Course.objects.all()})
+	else:
+		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
 
 def registerform(request):

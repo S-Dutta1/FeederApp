@@ -1,109 +1,386 @@
 <!DOCTYPE html>
-<html>
-    <style>
-    form {
-    border: 3px solid #f1f1f1;
-    }
-    input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    }
-    button {
-    background-color: #191970;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    }
-    .loginbtn {
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Login form</title>
+    <script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">     
+    <!-- <link rel="stylesheet" href="css/reset.css"> -->
+
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet"> 
+        <!-- <link rel="stylesheet" href="css/style.css"> -->
+<style type="text/css">
+
+a.nounderline:link  
+{  
+ text-decoration:none;  
+}  
+
+  body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 62.5%;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  font-family: Raleway;
+  background: url(https://newevolutiondesigns.com/images/freebies/city-wallpaper-18.jpg) no-repeat fixed;
+  background-size: cover;
+  background-position: 50%;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+body .menu {
+  position: absolute;
+  width: 100%;
+  background: inherit;
+}
+body .menu .mainmenu {
+  background: url(https://newevolutiondesigns.com/images/freebies/city-wallpaper-18.jpg) no-repeat fixed;
+  background-size: cover;
+  background-position: 50%;
+}
+body .menu .mainmenu:before {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  -webkit-filter: blur(3px);
+  filter: blur(3px);
+}
+body .menu .mainmenu:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+body .menu .mainmenu .menuitem {
+  float: left;
+  width: 10%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  font-size: 1.5rem;
+}
+body #findpass {
+  top: 50%;
+  left: 5%;
+  padding: 10px 20px;
+  width: auto;
+  background: white;
+  color: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  font-size: 1.2rem;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  -moz-transform: translate3d(0, -50%, 0);
+  -ms-transform: translate3d(0, -50%, 0);
+  -webkit-transform: translate3d(0, -50%, 0);
+  transform: translate3d(0, -50%, 0);
+}
+body #findpass:focus {
+  outline: none;
+}
+body .article {
+  width: 960px;
+  font-size: 1.4rem;
+  margin: 20px auto;
+  color: white;
+  opacity: 0;
+  visibility: hidden;
+  -moz-transition: opacity 400ms linear;
+  -o-transition: opacity 400ms linear;
+  -webkit-transition: opacity 400ms linear;
+  transition: opacity 400ms linear;
+  -moz-transition-delay: 800ms;
+  -o-transition-delay: 800ms;
+  -webkit-transition-delay: 800ms;
+  transition-delay: 800ms;
+  top: 0;
+  position: relative;
+}
+body .article.active {
+  opacity: 1;
+  visibility: visible;
+}
+body .article h1 {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.form {
+  margin: 0 auto;
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  -moz-transform: translate3d(-50%, 0, 0);
+  -ms-transform: translate3d(-50%, 0, 0);
+  -webkit-transform: translate3d(-50%, 0, 0);
+  transform: translate3d(-50%, 0, 0);
+  width: 350px;
+  padding: 20px;
+  overflow: hidden;
+  background-color: black;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: inherit;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+  border-radius: 12px;
+}
+.form .forceColor {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.form:before {
+  content: "";
+  width: 110%;
+  height: 110%;
+  position: absolute;
+  background: inherit;
+  left: -5%;
+  right: 0;
+  bottom: 0;
+  top: -5%;
+  -webkit-filter: blur(3px);
+  filter: blur(3px);
+}
+.form.goAway {
+  opacity: 0;
+  -moz-transform: scale(0.6) translate3d(-50%, 0, 0);
+  -ms-transform: scale(0.6) translate3d(-50%, 0, 0);
+  -webkit-transform: scale(0.6) translate3d(-50%, 0, 0);
+  transform: scale(0.6) translate3d(-50%, 0, 0);
+  -moz-transition: -moz-transform 200ms ease-in-out, opacity 100ms linear;
+  -o-transition: -o-transform 200ms ease-in-out, opacity 100ms linear;
+  -webkit-transition: -webkit-transform 200ms ease-in-out, opacity 100ms linear;
+  transition: transform 200ms ease-in-out, opacity 100ms linear;
+  -moz-transition-delay: 600ms;
+  -o-transition-delay: 600ms;
+  -webkit-transition-delay: 600ms;
+  transition-delay: 600ms;
+}
+.form .topbar .spanColor {
+  position: absolute;
+  width: 0px;
+  right: 20px;
+  height: 43px;
+  opacity: 0.2;
+  background-color: white;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  -moz-transition: width 150ms ease-in-out, background-color 150ms ease-in-out 250ms, border 150ms ease-in-out 250ms;
+  -o-transition: width 150ms ease-in-out, background-color 150ms ease-in-out 250ms, border 150ms ease-in-out 250ms;
+  -webkit-transition: width 150ms ease-in-out, background-color 150ms ease-in-out, border 150ms ease-in-out;
+  -webkit-transition-delay: 0s, 250ms, 250ms;
+  transition: width 150ms ease-in-out, background-color 150ms ease-in-out 250ms, border 150ms ease-in-out 250ms;
+}
+.form .topbar .input {
+  display: block;
+  width: 100%;
+  position: relative;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  font-size: 1rem;
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+  margin-bottom: 25px;
+  color: rgba(255, 255, 255, 0.4);
+  padding: 10px 20px;
+}
+.form .topbar .input::-webkit-input-placeholder {
+  color: white;
+  font-size: 1.2rem;
+  font-family: Raleway;
+  line-height: 1.3rem;
+  font-weight: 200;
+}
+.form .topbar .input:focus {
+  outline: none;
+  color: white;
+  border: 1px solid white;
+}
+.form .topbar .input.disabled:hover {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.form .topbar .input:hover {
+  border: 1px solid white;
+}
+.form .submit {
+  padding: 10px 20px;
+  width: 100%;
+  font-size: 1.2rem;
+  font-family: Raleway;
+  font-weight: 200;
+  display: block;
+  color: white;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.5);
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.form .submit:focus {
+  outline: none;
+}
+.form .submit:hover {
+  color: white;
+  border: 1px solid white;
+}
+.form .submit.recover {
+  background: #FF2B4B;
+  color: white !important;
+  border: 1px solid white !important;
+  transition: all 400ms linear;
+}
+.form .submit1 {
+  padding: 10px 20px;
+  width: 100%;
+  font-size: 1.2rem;
+  font-family: Raleway;
+  font-weight: 200;
+  display: block;
+  color: white;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(59, 89, 152, 0.5);
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.form .submit1:focus {
+  outline: none;
+}
+.form .submit1:hover {
+  color: white;
+  border: 1px solid white;
+}
+.form .submit1.recover {
+  background: #FF2B4B;
+  color: white !important;
+  border: 1px solid white !important;
+  transition: all 400ms linear;
+}
+
+.form .submit2 {
+  padding: 10px 20px;
+  width: 100%;
+  font-size: 1.2rem;
+  font-family: Raleway;
+  font-weight: 200;
+  display: block;
+  color: white;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(211, 72, 54, 0.5);
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.form .submit2:focus {
+  outline: none;
+}
+.form .submit2:hover {
+  color: white;
+  border: 1px solid white;
+}
+.form .submit2.recover {
+  background: #FF2B4B;
+  color: white !important;
+  border: 1px solid white !important;
+  transition: all 400ms linear;
+}
+
+.topbar.success .spanColor {
+  width: calc(100% - 39px);
+  border-top-left-radius: 6px;
+  border: 1px solid #26C97D;
+  border-bottom-left-radius: 6px;
+  background-color: #26C97D;
+}
+.topbar.success + .submit {
+  color: white;
+  border: 1px solid white;
+}
+.topbar.success .input {
+  color: white;
+  border: 1px solid #26C97D;
+}
+.topbar.success .input::-webkit-input-placeholder {
+  color: white;
+}
+.myhead{
+  
+  font-family: 'Coiny', cursive;
+  text-shadow: 1.4px 1.4px #3b5998;
+position: fixed;
+padding: 20px 440px 40px;
+  /*font-family: 'Coiny', cursive;*/
+  
+}
+
+</style>
     
-    width: auto;
-    padding: 10px 18px;
-    background-color: #228B22;
-    }
-    .facbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #191970;
-    }
-    .cancelbtn1 {
-    text-align: center;
-    width: auto;
-    padding: 10px 18px;
-    background-color: #A52A2A;
-    }
-    .imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-    }
-    .container {
-    padding: 16px;
-    }
-    span.psw {
-    float: right;
-    padding-top: 16px;
-    }
-    /* Change styles for span and cancel button on extra small screens */
-    @media screen and (max-width: 300px) {
-    span.psw {
-    display: block;
-    float: none;
-    }
-    .cancelbtn {
-    width: 100%;
-    }
-    }
-    </style>
-    <body>
-        <h2><center>Welcome to Feeder </h2>
-        <h2><center>Instructor Login</h2>
-        <form role="form" action="{% url 'login' %}" method="post">{% csrf_token %}
-            <div class="imgcontainer">
-                <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
-            </div>
-            <div class="container">
-                <label><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="user_name" required>
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="user_password" required>
-                
-                <button  type="submit" class="loginbtn">Login</button>
-                <button type="button" class="facbtn" >Login using facebook</button>
-                <a href="{% url 'registerform' %}"><button type="button" class="loginbtn">Register</button></a>
-                <!-- <input type="checkbox" checked="checked"> Remember me -->
-            <!-- <button type="submit" class="facbtn">Login using facebook</button></a>
-            <button  type="submit" class="loginbtn"> <a href="http://127.0.0.1:8000/feeder/register/">Register</a></button> -->
-        </div>
-    </form>
     
-    <h2><center>Admin Login</h2>
-    <form role="form" action="{% url 'adminlogin' %}" method="post">{% csrf_token %}
-        <div class="imgcontainer">
-            <!-- <img src="img_avatar2.png" alt="Avatar" class="avatar"> -->
-        </div>
-        <div class="container">
-            <label><b>Username</b></label>
-            <input type="text" placeholder="Admin Username" name="admin_name" required>
-            <label><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="admin_password" required>
-            
-            <button  type="submit" class="loginbtn">Login</button>
-            
-            <!-- <input type="checkbox" checked="checked"> Remember me -->
-        <!-- <button type="submit" class="facbtn">Login using facebook</button></a>
-        <button  type="submit" class="loginbtn"> <a href="http://127.0.0.1:8000/feeder/register/">Register</a></button> -->
-    </div>
+    
+    
+  </head>
+
+  <body>
+  <div class="myhead"><font size="8" ><center>Welcome to Feeder</center></font> </div>
+  
+   
+  <form role="form" action="{% url 'adminlogin' %}" method="post">{% csrf_token %}
+<div class="form" style="align:right;">
+  <div class="forceColor"></div>
+  <div class="topbar">
+    <div class="spanColor"></div>
+    <input type="Text" class="input" id="Text" placeholder="Username" name="admin_name"/>
+    <input type="password" class="input" id="password" placeholder="Password" name="admin_password"/>
+  </div>
+  <button class="submit" type="submit" id="submit" > Admin Login</button>
+  <pre>   </pre>
+  <button class="submit1"  >Instructor Login</button>
+  <pre>   </pre>
+  <div>
+  <a href="{% url 'registerform' %}" style="text-decoration:none;"><button type="button" class="submit2">Instructor Sign-up</button></a></div>
+</div>
 </form>
 
-<a href="{% url 'login' %}"><button type="button" class="cancelbtn1">Cancel</button></a>
-<!-- <button type="button" >Register</button> -->
-<!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
-</body>
+        <!-- <script src="js/index.js"></script> -->
+
+    
+    
+  </body>
 </html>

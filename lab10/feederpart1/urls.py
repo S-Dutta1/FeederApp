@@ -10,6 +10,7 @@ urlpatterns = [
 	url(r'^registerform/', registerform, name='registerform'),
 	url(r'^register/', register, name='register'),
 	url(r'^adminlogin/', adminlogin, name='adminlogin'),
+	url(r'^adminhome/', adminhome, name='adminhome'),
 	url(r'^addcourse/', addcourse, name='addcourse'),
 	url(r'^deletecourse/(\w+)/(\w+)/', deletecourse, name='deletecourse'),
 	url(r'^addstudents/(\w+)/(\w+)/', addstudents, name='addstudents'),
