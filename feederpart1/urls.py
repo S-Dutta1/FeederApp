@@ -5,7 +5,8 @@ from feederpart1.views import *
 urlpatterns = [
 
 	url(r'^login/', loginform, name='loginform'),
-	url(r'^login1234/', login, name='login'),
+	url(r'^logout/',Logout, name='logout'),
+	url(r'^login1234/', Login, name='login'),
 	url(r'^registerform/', registerform, name='registerform'),
 	url(r'^register/', register, name='register'),
 	url(r'^adminlogin/', adminlogin, name='adminlogin'),

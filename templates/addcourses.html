@@ -146,6 +146,9 @@
             <input type='text' id='link_id'>
             <input type='button' id='link' value='Search' onClick='javascript:goTo()'>
             
+            <a href="{% url 'logout' %}">
+                <button style="width:auto;" type="button" class="loginbtn">Logout</button>
+            </a>
             
         </form>
         <h2><center>Add Courses Here</h2>
@@ -157,13 +160,9 @@
                 <div class="myDIV" id ="{{course.code}}">
                     <font size="5">{{course.name}} {{course.code}}</font>
                     <div style="text-align:right">
-                        {# <a href="http://127.0.0.1:8000/feeder/deletecourse/{{course.name}}/{{course.code}}"> #}
                         <a href="{% url 'deletecourse' course.name course.code %}">
                             <button style="width:auto;" type="submit" class="loginbtn">Delete</button>
                         </a>
-                        {# <button style="width:auto;">Delete</button> #}
-                        {# <button style="width:auto;", href="{% url 'addstudents' coursename=coursename coursecode=coursecode %}">Add Student</button> #}
-                        {# <a href="http://127.0.0.1:8000/feeder/addstudents/{{course.name}}/{{course.code}}"> #}
                         <a href="{% url 'addstudents' course.name course.code %}">
                             <button style="width:auto;">Add Student</button>
                         </a>

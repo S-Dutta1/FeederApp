@@ -11,5 +11,5 @@ with open('abc.csv','r') as f:
 	reader=csv.reader(f)
 	lista = list(reader)
 for i in range(len(lista)):
-	s=Student(username=lista[i][0],password=lista[i][1],rollno=lista[i][2])
+	s=Student(username=lista[i][0],password=lista[i][2],rollno=lista[i][1])
 	s.save()
