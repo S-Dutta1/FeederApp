@@ -15,5 +15,5 @@ urlpatterns = [
 	url(r'^deletecourse/(\w+)/(\w+)/', deletecourse, name='deletecourse'),
 	url(r'^addstudents/(\w+)/(\w+)/', addstudents, name='addstudents'),
 	url(r'^addstudent/(\w+)/(\w+)/(\w+)/', addstudent, name='addstudent'),
-	url(r'^feedbackof/(\w+)/(\w+)/(\w+)', editfeedback, name = 'editfeedback')
+	url(r'^feedbackof/(\w+)/(\w+)/(\w+)/', editfeedback, name = 'editfeedback')
 ]

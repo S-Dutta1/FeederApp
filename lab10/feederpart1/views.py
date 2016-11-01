@@ -72,7 +72,8 @@ def adminlogin(request):
 					login(request, user)
 					return render(request, "addcourses.html", {"courses":Course.objects.all()})
 				else:
-					return render(request, 'blankMessage.html',{"message":'Authentication Fail'})
+					login(request, user)
+			    	return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
 			else:
 				# No backend authenticated the credentials
 				return render(request, 'blankMessage.html',{"message":'Authentication Fail'})
@@ -131,7 +132,7 @@ def register(request):
 											email=email,
 											password=password)
 			user.save()
-			return render(request, 'blankMessage.html',{"message":username+' registered successfully.'})
+			return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
 
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
@@ -212,10 +213,10 @@ def addstudents(request, coursename, coursecode):
 	else:
 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
-def addstudent(request, coursename, coursecode, studentname):
+def addstudent(request, coursename, coursecode, rollno):
 	if request.user.is_authenticated:
 		c=Course.objects.get(name=coursename,code=coursecode)
-		c.students.add(Student.objects.get(username=studentname))
+		c.students.add(Student.objects.get(rollno=rollno))
 		c.save()
 		return render(request, "addstudents.html", {"addedstudents":Course.objects.get(name=coursename,code=coursecode).students.all(),
 													"students":Student.objects.all(),
