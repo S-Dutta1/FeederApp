@@ -26,12 +26,12 @@ def Login(request):
 			user = authenticate(username=username, password=password)
 
 			if user is not None:
-			    # A backend authenticated the credentials
-			    login(request, user)
-			    return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
+			
+				login(request, user)
+				return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
 			else:
 			    # No backend authenticated the credentials
-			    return render(request, 'blankMessage.html',{"message":'Authentication Fail'})
+				return render(request, 'blankMessage.html',{"message":'Authentication Fail'})
 
 			# if Instructor.objects.filter(username=username).exists():
 			# 	real_password=Instructor.objects.get(username=username).password
@@ -50,8 +50,8 @@ def Login(request):
 	# u=request.user
 
 def Logout(request):
-    logout(request)
-    return render(request, "login.html", {})
+	logout(request)
+	return render(request, "login.html", {})
 
 def adminlogin(request):
 	# admin_username='assassin'
@@ -73,7 +73,7 @@ def adminlogin(request):
 					return render(request, "addcourses.html", {"courses":Course.objects.all()})
 				else:
 					login(request, user)
-			    	return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
+					return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
 			else:
 				# No backend authenticated the credentials
 				return render(request, 'blankMessage.html',{"message":'Authentication Fail'})
