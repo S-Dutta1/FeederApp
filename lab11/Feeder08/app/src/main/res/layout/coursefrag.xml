@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/coursepage"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+</LinearLayout>
+
+
+<!--<TextView-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+<!--android:text="Course"-->
+<!--android:id="@+id/textView"-->
+<!--android:layout_centerVertical="true"-->
+<!--android:layout_centerHorizontal="true" />-->
+
+    <!--<Button-->
+        <!--android:text="CS207"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/course_207"-->
+        <!--android:onClick="goto_feed"/>-->
+
+    <!--<Button-->
+        <!--android:text="CS251"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_below="@id/course_207"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/course_251"-->
+        <!--android:onClick="goto_feed"/>-->
+    <!--<Button-->
+        <!--android:text="CS213"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/course_251"-->
+        <!--android:id="@+id/course_213"-->
+        <!--android:onClick="goto_feed"/>-->
+    <!--<Button-->
+        <!--android:text="CS293"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/course_213"-->
+        <!--android:id="@+id/course_293"-->
+        <!--android:onClick="goto_feed"/>-->
+
+
