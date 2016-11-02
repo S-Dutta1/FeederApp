@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.http import JsonResponse
 from .forms import *
 from .models import *
 from django.contrib.auth.models import User
@@ -13,38 +14,34 @@ import datetime
 def loginform(request):
 	return render(request, "login.html", {})
 
-def Login(request):
-	username='none'
+def studentlogin(request):
+	rollno='none'
 	password='none'
 	if request.method == 'POST':
-		myform=ContactForm(data = request.POST)
+		myform=StudentLoginForm(data = request.POST)
 		if myform.is_valid():
 			myform=myform.cleaned_data
-			username=myform['user_name']
-			password=myform['user_password']
+			rollno=myform['rollno']
+			password=myform['password']
 
-			user = authenticate(username=username, password=password)
-
-			if user is not None:
-			
-				login(request, user)
-				return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
+			if Student.objects.filter(rollno=rollno).exists():
+				real_password=Student.objects.get(rollno=rollno).password
+				name=Student.objects.get(rollno=rollno).username
+				if password == real_password:
+					# return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
+					return JsonResponse('Welcome '+name.split()[0], safe=False)
+				else:
+					# return render(request, 'blankMessage.html',{"message":'password don\'t match'})
+					return JsonResponse('Password Mismatch', safe=False)
 			else:
-			    # No backend authenticated the credentials
-				return render(request, 'blankMessage.html',{"message":'Authentication Fail'})
-
-			# if Instructor.objects.filter(username=username).exists():
-			# 	real_password=Instructor.objects.get(username=username).password
-			# 	if password == real_password:
-			# 		return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
-			# 	else:
-			# 		return render(request, 'blankMessage.html',{"message":'password don\'t match'})
-			# else:
-			# 	return render(request, 'blankMessage.html',{"message":username+' username not found.'})
+				# return render(request, 'blankMessage.html',{"message":username+' username not found.'})
+				return JsonResponse('Roll no. not Found', safe=False)
 		else:
-			return render(request, 'blankMessage.html',{"message":'Error in input'})
+			# return render(request, 'blankMessage.html',{"message":'Error in input'})
+			return JsonResponse('Invalid Input', safe=False)
 	else:
-			return render(request, 'blankMessage.html',{"message":'Connection problem'})
+			# return render(request, 'blankMessage.html',{"message":'Connection problem'})
+			return JsonResponse('error.', safe=False)
 
 	# request.user.is_authenticated
 	# u=request.user
@@ -200,6 +197,8 @@ def addcourse(request):
 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
 def editfeedback(request, coursename, coursecode, feedbackname):
+	if request.user.is_authenticated==False:
+		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 	questions=Course.objects.get(name=coursename,code=coursecode).feedbackforms.get(name=feedbackname).questions.all()
 	return render(request, "editfeedback.html", {"questions":questions})
 
@@ -227,5 +226,47 @@ def addstudent(request, coursename, coursecode, rollno):
 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
 def deletecourse(request, coursename, coursecode):
+	if request.user.is_authenticated==False:
+		return render(request, 'blankMessage.html',{"message":'forbidden.'})
+
 	Course.objects.filter(name=coursename, code=coursecode).delete()
 	return render(request, "addcourses.html", {"courses":Course.objects.all()})
+
+def addsfeedback(request):
+# 	if !request.user.is_authenticated:
+# 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
+
+# 	coursecode='none'
+# 	password='none'
+# 	re_password='none'
+# 	email='none'
+# 	if request.method == 'POST':
+# 		myform=RegisterForm(data = request.POST)
+# 		if myform.is_valid():
+# 			myform=myform.cleaned_data
+# 			username=myform['username'] 
+# 			email=myform['email']
+# 			password=myform['password']
+# 			re_password=myform['re_password']
+
+# 			if password != re_password:
+# 				return render(request, 'blankMessage.html',{"message":'password dont match.'})
+
+# 			# bc=Instructor(
+# 			# 	username=username,
+# 			# 	fullname=fullname,
+# 			# 	instiname=instiname,
+# 			# 	password=password,
+# 			# 	email=email
+# 			# 	)
+# 			# bc.save()
+# 			user = User.objects.create_user(username=username,
+# 											email=email,
+# 											password=password)
+# 			user.save()
+# 			return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
+
+# 		else:
+# 			return render(request, 'blankMessage.html',{"message":'Error in input'})
+# 	else:
+			return render(request, 'blankMessage.html',{"message":'Connection problem.'})

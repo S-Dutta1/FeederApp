@@ -5,6 +5,10 @@ class ContactForm(forms.Form):
 	user_name = forms.CharField(max_length=50,required=True)
 	user_password = forms.CharField(widget = forms.PasswordInput(),required=True)
 
+class StudentLoginForm(forms.Form):
+	rollno = forms.CharField(max_length=50,required=True)
+	password = forms.CharField(widget = forms.PasswordInput(),required=True)
+
 class RegisterForm(forms.Form):
 	username = forms.CharField(max_length=50,required=True)
 	email = forms.CharField(max_length=50,required=True)
