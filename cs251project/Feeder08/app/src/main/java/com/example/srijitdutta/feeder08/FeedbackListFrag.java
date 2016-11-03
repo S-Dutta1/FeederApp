@@ -1,7 +1,7 @@
 package com.example.srijitdutta.feeder08;
 
 /**
- * Created by SRIJIT DUTTA on 30-Oct-16.
+ * Created by SRIJIT DUTTA on 03-Nov-16.
  */
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -35,30 +37,50 @@ import java.util.Iterator;
 import javax.net.ssl.HttpsURLConnection;
 
 
-public class CourseFrag extends Fragment{
-    LinearLayout linearLayout;
-    static String selected_course;
+
+public class FeedbackListFrag extends Fragment{
+    LinearLayout layout;static String feedback_name;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
-        View view=inflater.inflate(R.layout.coursefrag, container, false);
-        linearLayout=(LinearLayout) view.findViewById(R.id.coursepage);
-//        String ids[]={"CS207","CS215","CS293","CS251","CS225"};
-//        for(int i=0;i<5;i++) {
-//            linearLayout.addView(button(ids[i],i));
-//        }
-        JSONArray courses=CalFrag.json_array_of_course;
+        View view=inflater.inflate(R.layout.feedbacklist_frag, container, false);
+        layout=(LinearLayout) view.findViewById(R.id.feedbacklist);
+        JSONArray feeds_and_assigns = CalFrag.json_array_of_course;
+        String cc=CourseFrag.selected_course;int i;
+        Toast.makeText(getContext(),cc, Toast.LENGTH_LONG).show();
         try {
-            for (int i = 0; i < courses.length(); i++) {
-                JSONObject obj_course = courses.getJSONObject(i);
+            for ( i = 0; i < feeds_and_assigns.length(); i++) {
+                JSONObject obj_course = feeds_and_assigns.getJSONObject(i);
                 String coursecode = obj_course.getString("coursecode");
-                linearLayout.addView(button(coursecode,i));
+                if(coursecode.equals(cc))
+                    break;
+            }
+            JSONObject abc = feeds_and_assigns.getJSONObject(i);
+            JSONArray fb,assn;JSONObject tmp_obj;
+            fb =  abc.getJSONArray("feedbackforms");
+            assn = abc.getJSONArray("assignments");
+            layout.addView(editText("FEEDBACKS"));
+
+            for (i=0;i<fb.length();i++){
+                tmp_obj=fb.getJSONObject(i);
+                String s=tmp_obj.getString("name");
+                String d=tmp_obj.getString("deadline");
+                s=s+"         "+d.substring(0,d.indexOf('T'));
+                layout.addView(button(s,i));
+            }
+
+            layout.addView(editText("\n\nASSIGNMENTS"));
+            for (i=0;i<assn.length();i++){
+                tmp_obj=assn.getJSONObject(i);
+                String s=tmp_obj.getString("name");
+                String d=tmp_obj.getString("deadline");
+                s=s+"         "+d.substring(0,d.indexOf('T'));
+                layout.addView(editText(s));
             }
         }
         catch (Exception e){}
-
 
         return(view);
     }
@@ -82,11 +104,11 @@ public class CourseFrag extends Fragment{
             @Override
             public void onClick(View v) {
                 String buttid = butt.getText().toString();
-                Fragment fragment = new FeedbackListFrag();
+                Fragment fragment = new FeedbackFrag();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame,fragment);
                 ft.addToBackStack(null);
-                selected_course=butt.getText().toString();
+                feedback_name=buttid.substring(0,buttid.indexOf(' '));
                 ft.commit();
 
             }
@@ -94,4 +116,13 @@ public class CourseFrag extends Fragment{
         return butt;
     }
 
+    private TextView editText(String assgn)
+    {
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView tv=new TextView(getContext());
+        tv.setLayoutParams(p);
+        tv.setText(assgn);
+        //layout.addView(tv);
+        return tv;
+    }
 }

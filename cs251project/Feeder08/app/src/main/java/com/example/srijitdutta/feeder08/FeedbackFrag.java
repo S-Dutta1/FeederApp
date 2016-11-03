@@ -3,11 +3,14 @@ package com.example.srijitdutta.feeder08;
 /**
  * Created by SRIJIT DUTTA on 31-Oct-16.
  */
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,21 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Iterator;
+
+import javax.net.ssl.HttpsURLConnection;
+
 public class FeedbackFrag extends Fragment{
 
     LinearLayout layout;String response;
@@ -33,12 +51,10 @@ public class FeedbackFrag extends Fragment{
         //change R.layout.yourlayoutfilename for each of your fragments
         View view = inflater.inflate(R.layout.feedbackfrag, container, false);
         layout = (LinearLayout) view.findViewById(R.id.feedbackpage);
-        layout.addView(radioGroup("How was the midsem?"));
-        layout.addView(radioGroup("How was the endsem?"));
-        layout.addView(editText("Other Suggestion"));
-//        if(layout.getParent()!=null)
-//            ((ViewGroup)layout.getParent()).removeView(layout);
-        //layout.addView(editText("Other Suggestions"));
+//        layout.addView(radioGroup("How was the midsem?"));
+//        layout.addView(radioGroup("How was the endsem?"));
+//        layout.addView(editText("Other Suggestion"));
+        new SendPostRequest().execute();
         return(view);
     }
 
@@ -97,6 +113,109 @@ public class FeedbackFrag extends Fragment{
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Feedback");
 
+    }
+
+
+    /////////////////////////////////////
+
+    public class SendPostRequest extends AsyncTask<String, Void, String> {
+
+        protected void onPreExecute(){}
+
+        protected String doInBackground(String... arg0) {
+
+            String cc=CourseFrag.selected_course;String feedname=FeedbackListFrag.feedback_name;
+            String uril="http://192.168.0.107:8008/feeder/"+"getquestions/"+cc+"/"+feedname+"/";
+            try {
+
+                URL url = new URL(uril); // here is your URL path
+
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(9000 /* milliseconds */);
+                conn.setConnectTimeout(9000 /* milliseconds */);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+
+                int responseCode=conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader in=new BufferedReader(new
+                            InputStreamReader(
+                            conn.getInputStream()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line="";
+
+                    while((line = in.readLine()) != null) {
+
+                        sb.append(line);
+                        break;
+                    }
+
+
+                    in.close();
+
+                    return sb.toString();
+
+                }
+                else {
+                    return new String("false : "+responseCode);
+                }
+            }
+            catch(Exception e){
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray json_array_of_ques = jsonObject.getJSONArray("questions");
+                for(int i=0;i< json_array_of_ques.length() ;i++)
+                {
+                    JSONObject obj_tmp = json_array_of_ques.getJSONObject(i);
+                    String question = obj_tmp.getString("text");
+                    layout.addView(radioGroup(question));
+
+                }
+
+//                Toast.makeText(getContext(), result,
+//                        Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e){}
+        }
+    }
+
+    public String getPostDataString(JSONObject params) throws Exception {
+
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        Iterator<String> itr = params.keys();
+
+        while(itr.hasNext()){
+
+            String key= itr.next();
+            Object value = params.get(key);
+
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(key, "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+        }
+
+        return result.toString();
     }
 
 }
