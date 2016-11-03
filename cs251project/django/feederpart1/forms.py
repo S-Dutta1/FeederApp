@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student
+# from .models import Student
 
 class ContactForm(forms.Form):
 	user_name = forms.CharField(max_length=50,required=True)
@@ -23,4 +23,10 @@ class AddCourseForm(forms.Form):
 	name = forms.CharField(max_length=50,required=True)
 	code = forms.CharField(max_length=10,required=True)
 
+class AddFeedbackForm(forms.Form):
+	coursecode = forms.CharField(max_length=10,required=True)
+	feedbackname = forms.CharField(max_length=20,required=True)
+	feedbackdeadline = forms.DateField()
 	
+class AddQuestionForm(forms.Form):
+	text = forms.CharField(max_length=500,required=True)

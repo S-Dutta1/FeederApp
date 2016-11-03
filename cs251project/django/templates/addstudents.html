@@ -325,7 +325,7 @@
         <div class="myhead1"><font size="5" >List of  Students</font></div>
         {% for student in students %}
         <pre> </pre>
-        <a href="{% url 'addstudent' coursename coursecode student.rollno %}" style="text-decoration:none;">
+        <a href="{% url 'addstudent' coursecode student.rollno %}" style="text-decoration:none;">
           <div class="myhead1"><font size="3">{{student.username}}</font></div>
         </a>
       <pre></pre>

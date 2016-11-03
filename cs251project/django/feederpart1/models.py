@@ -36,7 +36,7 @@ class Feedbackform(models.Model):
 
 class Course(models.Model):
 	name=models.CharField(max_length=50)
-	code=models.CharField(max_length=10)
+	code=models.CharField(max_length=10, unique= True,)
 	students=models.ManyToManyField(Student, blank=True)
 	feedbackforms=models.ManyToManyField(Feedbackform,blank=True)
 	assignments=models.ManyToManyField(Assignment,blank=True)

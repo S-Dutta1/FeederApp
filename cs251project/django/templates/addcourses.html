@@ -434,7 +434,7 @@
                     <font size="5"><div class="myhead1"><center>{{course.name}} {{course.code}}</center></div></font>
                     
                 <pre>   </pre>
-                <a href="{% url 'deletecourse' course.name course.code %}" style="text-decoration:none;">
+                <a href="{% url 'deletecourse' course.code %}" style="text-decoration:none;">
                     <button class="submit"  id="submit" >Delete</button>
                 </a>
             </div>
@@ -442,7 +442,7 @@
             </pre>
             
             
-            <a href="{% url 'addstudents' course.name course.code %}" style="text-decoration:none;">
+            <a href="{% url 'addstudents' course.code %}" style="text-decoration:none;">
                 <button class="submit"  id="submit" >Add Students</button>
                 
             </div>
