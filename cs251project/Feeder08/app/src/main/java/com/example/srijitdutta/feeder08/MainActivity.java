@@ -22,7 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity{
-    Button button_signin;String user1,pass1;String received="xxxxxxxxxxx";StringBuilder result=new StringBuilder();
+    Button button_signin;static String user1,pass1;String received="xxxxxxxxxxx";StringBuilder result=new StringBuilder();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity{
 
             try {
 
-                URL url = new URL("http://10.0.2.2:8008/feeder/studentlogin/"); // here is your URL path
+                URL url = new URL("http://192.168.0.107:8008/feeder/studentlogin/"); // here is your URL path
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("rollno", user1);
