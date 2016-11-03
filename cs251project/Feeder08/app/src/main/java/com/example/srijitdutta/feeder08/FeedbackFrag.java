@@ -35,6 +35,7 @@ public class FeedbackFrag extends Fragment{
         layout = (LinearLayout) view.findViewById(R.id.feedbackpage);
         layout.addView(radioGroup("How was the midsem?"));
         layout.addView(radioGroup("How was the endsem?"));
+        layout.addView(editText("Other Suggestion"));
 //        if(layout.getParent()!=null)
 //            ((ViewGroup)layout.getParent()).removeView(layout);
         //layout.addView(editText("Other Suggestions"));
@@ -75,15 +76,17 @@ public class FeedbackFrag extends Fragment{
     {
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         final EditText ed=new EditText(getContext());
-        ed.setText(ques);
+        ed.setLayoutParams(p);
+        ed.setHint("Your Response");
 
         TextView tv=new TextView(getContext());
         tv.setLayoutParams(p);
         tv.setText(ques);
+        layout.addView(tv);
         //((ViewGroup)layout.getParent()).removeView(layout);
         //layout.addView(tv);
 
-        layout.addView(ed);
+//        layout.addView(ed);
 
         return ed;
     }
