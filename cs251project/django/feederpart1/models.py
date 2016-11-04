@@ -17,7 +17,7 @@ class Assignment(models.Model):
 		return self.name
 
 class Response(models.Model):
-	rating=models.IntegerField(default=0)
+	rating=models.CharField(max_length=50)
 	# timestamp
 	# student=models.OneToOne(Student) # so that one student can give feedback only once
 
@@ -36,7 +36,7 @@ class Feedbackform(models.Model):
 
 class Course(models.Model):
 	name=models.CharField(max_length=50)
-	code=models.CharField(max_length=10)
+	code=models.CharField(max_length=10, unique= True,)
 	students=models.ManyToManyField(Student, blank=True)
 	feedbackforms=models.ManyToManyField(Feedbackform,blank=True)
 	assignments=models.ManyToManyField(Assignment,blank=True)
