@@ -47,7 +47,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -170,7 +169,7 @@ public class CalFrag extends Fragment {
 
         protected String doInBackground(String... arg0) {
             String roll=SaveSharedPreference.getUserName(getContext());//MainActivity.user1;
-            String uril="http://192.168.0.107:8008/feeder/"+"getstudentdata/"+roll+"/";
+            String uril="http://10.5.41.211:8008/feeder/"+"getstudentdata/"+roll+"/";
             try {
 
                 URL url = new URL(uril); // here is your URL path
