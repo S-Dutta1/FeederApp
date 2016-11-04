@@ -9,6 +9,7 @@ import android.graphics.Picture;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -36,13 +37,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class CalFrag extends Fragment {
     MaterialCalendarView materialCalendarView;
+    static JSONArray json_array_of_course;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,6 +66,7 @@ public class CalFrag extends Fragment {
         materialCalendarView.setOnDateChangedListener(new Clickdate());
         materialCalendarView.addDecorator(new EventDecorator(Color.RED));//set color for dots
         materialCalendarView.addDecorator(new OneDayDecorator());
+        new SendPostRequest().execute();
         return(view);
     }
 
@@ -146,8 +160,116 @@ public class CalFrag extends Fragment {
         public void decorate(DayViewFacade view) {
             view.setBackgroundDrawable(highlightDrawable);
         }
+    }
+
+    ///////////////////////////////getting json/////////////////////////////
+    public class SendPostRequest extends AsyncTask<String, Void, String> {
+
+        protected void onPreExecute(){}
+
+        protected String doInBackground(String... arg0) {
+            String roll=SaveSharedPreference.getUserName(getContext());//MainActivity.user1;
+            String uril="http://10.5.41.211:8008/feeder/"+"getstudentdata/"+roll+"/";
+            try {
+
+                URL url = new URL(uril); // here is your URL path
+
+//                JSONObject postDataParams = new JSONObject();
+//                postDataParams.put("rollno", user1);
+//                postDataParams.put("password", pass1);
+//                Log.e("params",postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(9000 /* milliseconds */);
+                conn.setConnectTimeout(9000 /* milliseconds */);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                int responseCode=conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader in=new BufferedReader(new
+                            InputStreamReader(
+                            conn.getInputStream()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line="";
+
+                    while((line = in.readLine()) != null) {
+
+                        sb.append(line);
+                        break;
+                    }
 
 
+                    in.close();
+
+                    return sb.toString();
+
+                }
+                else {
+                    return new String("false : "+responseCode);
+                }
+            }
+            catch(Exception e){
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                json_array_of_course = jsonObject.getJSONArray("courses");
+                for(int i=0;i< json_array_of_course.length() ;i++)
+                {
+                    JSONObject obj_course = json_array_of_course.getJSONObject(i);
+                    String coursecode = obj_course.getString("coursecode");
+                    //Toast.makeText(getContext(), coursecode, Toast.LENGTH_LONG).show();
+                    JSONArray feedback_deadlines = obj_course.getJSONArray("feedbackforms");
+                    for(int j=0;i<feedback_deadlines.length();j++)
+                    {
+                        JSONObject feedc=feedback_deadlines.getJSONObject(j);
+                        String dead=feedc.getString("deadline");
+                        //Toast.makeText(getContext(), dead, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+//                Toast.makeText(getContext(), result,
+//                        Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e){}
+
+        }
+    }
+
+    public String getPostDataString(JSONObject params) throws Exception {
+
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        Iterator<String> itr = params.keys();
+
+        while(itr.hasNext()){
+
+            String key= itr.next();
+            Object value = params.get(key);
+
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(key, "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+        }
+
+        return result.toString();
     }
 
 }
