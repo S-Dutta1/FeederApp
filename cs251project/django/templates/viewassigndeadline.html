@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Feeder</title>
+	</head>
+	<body>
+		<h2><center>{{course.name}}</h2>
+		{# {% today =  datetime.now() %} #}
+		<div>
+		futureassignments deadlines
+			{% for assignment in futureassignments%}
+				<div class="container">
+					<div>
+						<font size="5">
+						{{assignment.deadline}}
+						</font>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div>
+		pastassignments deadlines
+			{% for assignment in pastassignments%}
+				<div class="container">
+					<div>
+						<font size="5">
+						{{assignment.deadline}}
+						</font>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div>
+		futurefeedbacks deadlines
+			{% for feedback in futurefeedbacks%}
+				<div class="container">
+					<div>
+						<font size="5">
+						{{feedback.deadline}}
+						</font>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div>
+		pastfeedbacks deadlines
+			{% for feedback in pastfeedbacks%}
+				<div class="container">
+					<div>
+						<font size="5">
+						{{feedback.deadline}}
+						</font>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</body>
+</html>
