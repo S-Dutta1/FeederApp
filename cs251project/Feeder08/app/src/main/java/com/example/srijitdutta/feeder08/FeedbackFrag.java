@@ -46,7 +46,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class FeedbackFrag extends Fragment{
 
     LinearLayout layout;String response;JSONArray json_array_of_ques;String final_response="";RadioGroup rg_arr[];
-    RadioGroup rg;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +57,7 @@ public class FeedbackFrag extends Fragment{
 //        layout.addView(radioGroup("How was the endsem?"));
 //        layout.addView(editText("Other Suggestion"));
         new SendPostRequest().execute();
+
         return(view);
     }
 
@@ -240,12 +240,111 @@ public class FeedbackFrag extends Fragment{
             {
                 final_response+=((rg_arr[hh].getCheckedRadioButtonId()-1)%5)+1;
             }
-                Toast.makeText(getContext(), final_response,Toast.LENGTH_LONG).show();
-                final_response="";
+                //Toast.makeText(getContext(), final_response,Toast.LENGTH_LONG).show();
+                new SendPostRequest1().execute();
+                Fragment fragment = new FeedbackListFrag();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame,fragment);
+                ft.addToBackStack(null);
+                ft.commit();
             }
 
         });
         return butt;
     }
+    ///////////////////////////////////sending feedback//////////////////////////////////////////////////////
+
+
+
+    public class SendPostRequest1 extends AsyncTask<String, Void, String> {
+
+        protected void onPreExecute(){}
+
+        protected String doInBackground(String... arg0) {
+
+            String uril="http://10.5.41.211:8008/feeder/sentfeedback/";
+            try {
+
+                URL url = new URL(uril); // here is your URL path
+//                Toast.makeText(getContext(), MainActivity.user1,
+//                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), CourseFrag.selected_course,
+//                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), FeedbackListFrag.feedback_name,
+//                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), final_response,
+//                        Toast.LENGTH_LONG).show();
+                JSONObject postDataParams = new JSONObject();
+                postDataParams.put("rollno", SaveSharedPreference.getUserName(getContext()));
+                //System.out.println(MainActivity.user1);
+                postDataParams.put("coursecode", CourseFrag.selected_course);
+                //System.out.println(CourseFrag.selected_course);
+                postDataParams.put("feedbackname", FeedbackListFrag.feedback_name);
+                //System.out.println(FeedbackListFrag.feedback_name);
+                postDataParams.put("feedbackdata", final_response);
+                final_response="";
+                //System.out.println(final_response);
+                Log.e("params",postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(9000 /* milliseconds */);
+                conn.setConnectTimeout(9000 /* milliseconds */);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+
+                int responseCode=conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader in=new BufferedReader(new
+                            InputStreamReader(
+                            conn.getInputStream()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line="";
+
+                    while((line = in.readLine()) != null) {
+
+                        sb.append(line);
+                        break;
+                    }
+
+
+                    in.close();
+
+                    return sb.toString();
+
+                }
+                else {
+                    return new String("false : "+responseCode);
+                }
+            }
+            catch(Exception e){
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                Toast.makeText(getContext(), result,
+                        Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e){}
+        }
+    }
+
 
 }

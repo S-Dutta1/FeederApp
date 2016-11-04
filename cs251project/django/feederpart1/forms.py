@@ -36,3 +36,9 @@ class AddAssignmentForm(forms.Form):
 	coursecode = forms.CharField(max_length=10,required=True)
 	assignmentname = forms.CharField(max_length=50,required=True)
 	assignmentdeadline = forms.CharField(max_length=50,required=True)#forms.DateTimeField(required=True, input_formats=['%d/%m/%Y %H:%M'])
+
+class SentFeedbackForm(forms.Form):
+	rollno = forms.CharField(max_length=50,required=True)
+	coursecode = forms.CharField(max_length=50,required=True)
+	feedbackname = forms.CharField(max_length=50,required=True)
+	feedbackdata = forms.CharField(max_length=500,required=True)

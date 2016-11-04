@@ -17,7 +17,7 @@ class Assignment(models.Model):
 		return self.name
 
 class Response(models.Model):
-	rating=models.IntegerField(default=0)
+	rating=models.CharField(max_length=50)
 	# timestamp
 	# student=models.OneToOne(Student) # so that one student can give feedback only once
 

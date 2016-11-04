@@ -7,4 +7,4 @@ admin.site.register(Course)
 admin.site.register(Feedbackform)
 admin.site.register(Assignment)
 admin.site.register(Question)
-
+admin.site.register(Response)
