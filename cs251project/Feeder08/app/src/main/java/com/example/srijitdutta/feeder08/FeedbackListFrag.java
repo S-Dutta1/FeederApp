@@ -3,6 +3,7 @@ package com.example.srijitdutta.feeder08;
 /**
  * Created by SRIJIT DUTTA on 03-Nov-16.
  */
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class FeedbackListFrag extends Fragment{
         layout=(LinearLayout) view.findViewById(R.id.feedbacklist);
         JSONArray feeds_and_assigns = CalFrag.json_array_of_course;
         String cc=CourseFrag.selected_course;int i;
-        Toast.makeText(getContext(),cc, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(),cc, Toast.LENGTH_LONG).show();
         try {
             for ( i = 0; i < feeds_and_assigns.length(); i++) {
                 JSONObject obj_course = feeds_and_assigns.getJSONObject(i);
@@ -116,13 +117,31 @@ public class FeedbackListFrag extends Fragment{
         return butt;
     }
 
-    private TextView editText(String assgn)
+    private TextView editText(final String assgn)
     {
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView tv=new TextView(getContext());
         tv.setLayoutParams(p);
         tv.setText(assgn);
         //layout.addView(tv);
+        tv.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Dialog dialog=new Dialog(getContext());
+                dialog.setContentView(R.layout.pop_up_event);
+                String str_to_dialog="Submit  "+assgn;
+                dialog.addContentView(tw(str_to_dialog),p);
+                dialog.show();
+            }
+        });
         return tv;
+    }
+    private TextView tw(String s)
+    {
+        final TextView textView=new TextView(getContext());
+        textView.setText(s);
+        textView.setTextSize(24);
+        textView.setPadding(100,0,15,15);
+        return  textView;
     }
 }
