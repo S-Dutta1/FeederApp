@@ -426,6 +426,7 @@
     }
     .popup {
     top: 70px;
+    left: 450px;
     margin: 40px auto;
     padding: 20px;
     background: #000000;
@@ -445,7 +446,7 @@
     border-radius: 15px;
     border: 1px solid rgba(255,255,255,0.9);
     width:500px;
-    height:370px;
+    height:470px;
     position: relative;
     transition: all 5s ease-in-out;
     
@@ -473,7 +474,7 @@
     top: 10px;
     letter-spacing: 2px;
     }
-    .login input[type=text]{
+    .login input[type=text],.login input[type=datetime-local]{
     width: 250px;
     height: 40px;
     right: 300px;
@@ -501,12 +502,12 @@
     color: rgba(255, 255, 255, 0.4);
     padding: 10px 20px;
     }
-    .login input[type=text]:focus{
+    .login input[type=text]:focus,.login input[type=datetime-local]:focus{
     outline: none;
     border: 1px solid rgba(255,255,255,0.9);
     color: #ffffff;
     }
-    .login input[type=text]:hover{
+    .login input[type=text]:hover ,.login input[type=datetime-local]:hover{
     outline: none;
     border: 1px solid rgba(255,255,255,0.9);
     border: 1px solid white;
@@ -532,9 +533,9 @@
     
   </head>
   
-  <body>
+  <body><a href="{% url 'logout' %}">
     <button class="fill" style=" height: 48px;
-    width: 70px;border-radius: 17px;left:1000px;font-size: 30px;color:rgba(255,255,255,0.7);" ><span class=" glyphicon glyphicon-log-out"></span></button><div class="myhead"><font size="8" ><center> Feedback Page</center></font> </div>
+    width: 70px;border-radius: 17px;left:1000px;font-size: 30px;color:rgba(255,255,255,0.7);" ><span class=" glyphicon glyphicon-log-out"></span></button></a><div class="myhead"><font size="8" ><center> Feedback Page</center></font> </div>
     
     <!-- <form role="form" action="{% url 'register' %}" method="post">{% csrf_token %} -->
     <div class="form" style="align:right;">
@@ -550,23 +551,23 @@
     </div>
   </form>
     <form id="popup1" class="overlay" role="form" action="{% url 'addfeedback' %}" method="post">{% csrf_token %}
+          <div class="login"> 
         <div class="popup">
-          {# <div class="login"> #}
             <input type="text" placeholder="Course Code " name="coursecode"><br>
             <input type="text" placeholder="Feedback Name " name="feedbackname"><br>
             
             <button  class="fill" >Done</button>
-          {# </div> #}
+           </div> 
         </div>
       </form>
       <form id="popup2" class="overlay" role="form" action="{% url 'addassignment' %}" method="post">{% csrf_token %}
-        <div class="popup">
-          {# <div class="login"> #}
-            <input type="text" placeholder="Course Code " name="coursecode">
-            <input type="text" placeholder="Assignment Name " name="assignmentname">
-            <input type="datetime-local" placeholder="Enter Date and Time"   name="assignmentdeadline">
-            <button type="submit" class="fill" >Done</button>
-          {# </div> #}
+          <div class="login"> 
+        <div class="popup" style="height:380px;" >
+            <input type="text" placeholder="Course Code " style="width:420px;" name="coursecode"><br>
+            <input type="text" placeholder="Assignment Name" style="width:420px;"  " name="assignmentname"><br>
+            <input type="datetime-local" placeholder="Enter Date and Time Eg: YYYY-MM-DD HH:MM" style="width:420px;"    name="assignmentdeadline">
+            <button  class="fill" >Done</button>
+           </div> 
         </div>
       </form>
       <form id="popup3" class="overlay" role="form" action="{% url 'addcourse' %}" method="post">{% csrf_token %}
