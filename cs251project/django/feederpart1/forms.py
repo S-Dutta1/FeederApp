@@ -42,3 +42,10 @@ class SentFeedbackForm(forms.Form):
 	coursecode = forms.CharField(max_length=50,required=True)
 	feedbackname = forms.CharField(max_length=50,required=True)
 	feedbackdata = forms.CharField(max_length=500,required=True)
+
+class ViewResponseForm(forms.Form):
+	coursecode = forms.CharField(max_length=10,required=True)
+	feedbackname = forms.CharField(max_length=20,required=True)
+
+class GetCourseCodeForm(forms.Form):
+	coursecode = forms.CharField(max_length=10,required=True)

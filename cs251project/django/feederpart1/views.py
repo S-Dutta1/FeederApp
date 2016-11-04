@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate,login
 from django.http import HttpResponse
 from django.http import JsonResponse
+from datetime import datetime 
 from .forms import *
 from .models import *
 from django.contrib.auth.models import User
@@ -298,10 +299,10 @@ def addassignment(request):
 			coursecode=myform['coursecode'] 
 			assignmentname=myform['assignmentname']
 			assignmentdeadline=myform['assignmentdeadline']
-
+			deadline=datetime.strptime(assignmentdeadline, "%d-%m-%Y %H:%M")
 			a=Assignment(
 				name=assignmentname,
-				deadline=assignmentdeadline
+				deadline=deadline
 				)
 			a.save()
 			c=Course.objects.get(code=coursecode)
@@ -380,9 +381,47 @@ def sentfeedback(request):
 			# return render(request, 'blankMessage.html',{"message":'Connection problem'})
 			return JsonResponse('error try again', safe=False)
 
-def viewallresponseof(request, coursecode ,feedbackname):
-	# if request.user.is_authenticated==False:
-	# 	return render(request, 'blankMessage.html',{"message":'forbidden.'})
+def viewallresponseof(request):
+	if request.user.is_authenticated==False:
+		return render(request, 'blankMessage.html',{"message":'forbidden.'})
+	coursecode='none'
+	feedbackname='none'
+	if request.method == 'POST':
+		myform=ViewResponseForm(data = request.POST)
+		if myform.is_valid():
+			myform=myform.cleaned_data
+			coursecode=myform['coursecode']
+			feedbackname=myform['feedbackname']
+			feedback=Course.objects.get(code=coursecode).feedbackforms.filter(name=feedbackname)[0]
+			return render(request, 'viewallresponse.html',{"feedback":feedback})
+		else:
+			return render(request, 'blankMessage.html',{"message":'Error in input'})
+	else:
+			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
 
-	feedback=Course.objects.get(code=coursecode).feedbackforms.get(name=feedbackname)
-	return render(request, 'viewallresponse.html',{"feedback":feedback})
+def viewalldeadlineof(request):
+	if request.user.is_authenticated==False:
+		return render(request, 'blankMessage.html',{"message":'forbidden.'})
+
+	coursecode='none'
+	if request.method == 'POST':
+		myform=GetCourseCodeForm(data = request.POST)
+		if myform.is_valid():
+			myform=myform.cleaned_data
+			coursecode=myform['coursecode']
+			course=Course.objects.get(code=coursecode)
+			td=datetime.datetime.now()
+			futureassignments=course.assignments.filter(deadline__gte = td)
+			pastassignments=course.assignments.exclude(deadline__gte = td)
+			futurefeedbacks=course.feedbackforms.filter(deadline__gte = td)
+			pastfeedbacks=course.feedbackforms.exclude(deadline__gte = td)
+			return render(request, 'viewassigndeadline.html',{	"course":course,
+																"futureassignments":futureassignments,
+														"pastassignments":pastassignments,
+														"futurefeedbacks":futurefeedbacks,
+														"pastfeedbacks":pastfeedbacks
+														})
+		else:
+			return render(request, 'blankMessage.html',{"message":'Error in input'})
+	else:
+			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
