@@ -1,4 +1,5 @@
 from django import forms
+from datetime import datetime, date, time
 # from .models import Student
 
 class ContactForm(forms.Form):
@@ -26,7 +27,12 @@ class AddCourseForm(forms.Form):
 class AddFeedbackForm(forms.Form):
 	coursecode = forms.CharField(max_length=10,required=True)
 	feedbackname = forms.CharField(max_length=20,required=True)
-	feedbackdeadline = forms.DateField()
+	# feedbackdeadline = forms.DateTimeField()
 	
 class AddQuestionForm(forms.Form):
-	text = forms.CharField(max_length=500,required=True)
+	Qtext = forms.CharField(max_length=500,required=True)
+
+class AddAssignmentForm(forms.Form):
+	coursecode = forms.CharField(max_length=10,required=True)
+	assignmentname = forms.CharField(max_length=50,required=True)
+	assignmentdeadline = forms.CharField(max_length=50,required=True)#forms.DateTimeField(required=True, input_formats=['%d/%m/%Y %H:%M'])

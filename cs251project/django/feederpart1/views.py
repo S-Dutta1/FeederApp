@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate,login
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .forms import *
@@ -70,7 +69,7 @@ def adminlogin(request):
 					return render(request, "addcourses.html", {"courses":Course.objects.all()})
 				else:
 					login(request, user)
-					return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
+					return render(request, "loggedin.html", {})
 			else:
 				# No backend authenticated the credentials
 				return render(request, 'blankMessage.html',{"message":'Authentication Fail'})
@@ -93,6 +92,11 @@ def adminhome(request):
 	else:
 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
+def userhome(request):
+	if request.user.is_authenticated:	
+		return render(request, "loggedin.html", {"courses":Course.objects.all()})
+	else:
+		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
 def registerform(request):
 	return render(request, "register.html", {})
@@ -196,11 +200,11 @@ def addcourse(request):
 	else:
 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
-def editfeedback(request, coursecode, feedbackname):
-	if request.user.is_authenticated==False:
-		return render(request, 'blankMessage.html',{"message":'forbidden.'})
-	questions=Course.objects.get(code=coursecode).feedbackforms.get(name=feedbackname).questions.all()
-	return render(request, "editfeedback.html", {"questions":questions})
+# def editfeedback(request, coursecode, feedbackname):
+# 	if request.user.is_authenticated==False:
+# 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
+# 	questions=Course.objects.get(code=coursecode).feedbackforms.get(name=feedbackname).questions.all()
+# 	return render(request, "editfeedback.html", {"questions":questions})
 
 def addstudents(request, coursecode):
 	if request.user.is_authenticated:
@@ -236,9 +240,13 @@ def addquestion(request, coursecode ,feedbackname):
 	if request.method == 'POST':
 		myform=AddQuestionForm(data = request.POST)
 		if myform.is_valid():
-			q=Question(text=myform['text'])
-			Course.objects.get(code=coursecode).feedbackforms.get(name=feedbackname).questions.add(q)
-			return render(request, "addcourses.html", {"courses":Course.objects.all()})
+			myform=myform.cleaned_data
+			q=Question(text=myform['Qtext'])
+			q.save()
+			c=Course.objects.get(code=coursecode).feedbackforms.filter(name=feedbackname)[0]
+			c.questions.add(q)
+			c.save()
+			return render(request, "editfeedback.html", {"questions":c.questions.all(),"coursecode":coursecode,"feedbackname":feedbackname})
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:
@@ -250,29 +258,31 @@ def addfeedback(request):
 
 	coursecode='none'
 	feedbackname='none'
-	feedbackdeadline='none'
+	# feedbackdeadline='none'
 	if request.method == 'POST':
 		myform=AddFeedbackForm(data = request.POST)
 		if myform.is_valid():
 			myform=myform.cleaned_data
 			coursecode=myform['coursecode'] 
 			feedbackname=myform['feedbackname']
-			feedbackdeadline=myform['feedbackdeadline']
+			# feedbackdeadline=myform['feedbackdeadline']
 
 			f=Feedbackform(
 				name=feedbackname,
-				deadline=feedbackdeadline
+				# deadline=feedbackdeadline
 				)
 			f.save()
 			c=Course.objects.get(code=coursecode)
 			c.feedbackforms.add(f)
 			c.save()
-			return render(request, "editfeedback.html", {"username":username,"courses":Course.objects.all()})
-
+			questions=c.feedbackforms.filter(name=feedbackname)[0].questions.all()
+			context={"questions":questions,"coursecode":coursecode,"feedbackname":feedbackname}
+			return render(request, "editfeedback.html", context)
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:
 			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
+
 
 def addassignment(request):
 	if request.user.is_authenticated==False:
@@ -282,7 +292,7 @@ def addassignment(request):
 	assignmentname='none'
 	assignmentdeadline='none'
 	if request.method == 'POST':
-		myform=AddFeedbackForm(data = request.POST)
+		myform=AddAssignmentForm(data = request.POST)
 		if myform.is_valid():
 			myform=myform.cleaned_data
 			coursecode=myform['coursecode'] 
@@ -297,19 +307,41 @@ def addassignment(request):
 			c=Course.objects.get(code=coursecode)
 			c.assignments.add(a)
 			c.save()
-			return render(request, "loggedin.html", {"username":username,"courses":Course.objects.all()})
+			return render(request, "loggedin.html", context=None)
 
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:
 			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
 
-def coursenames(request, rollno):
+
+
+def getstudentdata(request, rollno):
 
 	s=Student.objects.get(rollno=rollno)
 	courses=s.course_set.all()
 	l=[]
 	for i in range(len(list(courses))):
-		l.append({"coursename":courses[i].name ,"coursecode":courses[i].code})
+		f=[]
+		a=[]
+		c=Course.objects.get(code=courses[i].code).feedbackforms.all()
+		for j in range(len(list(c))):
+			f.append({"name":c[j].name ,"deadline":c[j].deadline })
+		c=Course.objects.get(code=courses[i].code).assignments.all()
+		for j in range(len(list(c))):
+			a.append({"name":c[j].name ,"deadline":c[j].deadline })
+		l.append({"coursecode":courses[i].code,"feedbackforms":f,"assignments":a})
+
+
 	return JsonResponse({'courses':l})
+	
+def getquestions(request, coursecode ,feedbackname):
+
+	q=Course.objects.get(code=coursecode).feedbackforms.get(name=feedbackname).questions.all()
+	l=[]
+	for i in range(len(list(q))):
+		l.append({"text":q[i].text})
+
+
+	return JsonResponse({'questions':l})
 	

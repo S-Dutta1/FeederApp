@@ -122,10 +122,7 @@
     }
     </style>
     <body>
-        <h2><center>feedback.name</h2>
-        <div style="text-align:center">
-            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Add</button>
-        </div>
+        <h2><center>{{feedbackname}}</h2>
         {% for question in questions %}
             <div class="container">
                 
@@ -137,5 +134,14 @@
             </div>
         {% endfor %}
         
+        <div style="text-align:center">
+            <form role="form" action="{% url 'addquestion' coursecode feedbackname %}" method="post">{% csrf_token %}
+                <input placeholder="Add your question here" name="Qtext"/>
+                <button type="submit" style="width:auto;">Add</button>
+            </form>
+        </div>
+        <a href="{% url 'userhome' %}">
+            <button type="button" style="width:auto;">Done</button>
+        </a>
     </body>
 </html>
