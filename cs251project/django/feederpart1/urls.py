@@ -23,8 +23,10 @@ urlpatterns = [
 
 	url(r'^addfeedback/', csrf_exempt(addfeedback), name='addfeedback'),
 	# url(r'^feedbackof/(\w+)/(\w+)/', editfeedback, name = 'editfeedback'),
+	url(r'^viewallresponseof/(\w+)/(\w+)/', viewallresponseof, name = 'viewallresponseof'),
 
 	url(r'^studentlogin/', csrf_exempt(studentlogin), name='studentlogin'),
+	url(r'^sentfeedback/', csrf_exempt(sentfeedback), name='sentfeedback'),
 	url(r'^getstudentdata/(\w+)/', csrf_exempt(getstudentdata), name='getstudentdataerfgb'),
 	url(r'^getquestions/(\w+)/(\w+)/', csrf_exempt(getquestions), name='getquestions')
 ]

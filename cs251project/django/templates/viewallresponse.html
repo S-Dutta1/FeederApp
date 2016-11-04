@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Feeder</title>
+	</head>
+	<body>
+		<h2><center>{{feedback.name}}</h2>
+		{% for question in feedback.questions.all%}
+			<div class="container">
+				
+				<div>
+					<font size="5">
+					{{question.text}}
+					</font>
+				</div>
+				{%for response in question.responses.all%}
+				<div>
+					{{response.rating}}
+					<br>
+				</div>
+			{% endfor %}
+		</div>
+	{% endfor %}
+	
+</body>
+</html>

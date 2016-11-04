@@ -341,7 +341,48 @@ def getquestions(request, coursecode ,feedbackname):
 	l=[]
 	for i in range(len(list(q))):
 		l.append({"text":q[i].text})
-
-
 	return JsonResponse({'questions':l})
-	
+
+def sentfeedback(request):
+	rollno='none'
+	coursecode='none'
+	feedbackname='none'
+	feedbackdata='none'
+	if request.method == 'POST':
+		myform=SentFeedbackForm(data = request.POST)
+		if myform.is_valid():
+			myform=myform.cleaned_data
+			rollno=myform['rollno']
+			coursecode=myform['coursecode']
+			feedbackname=myform['feedbackname']
+			feedbackdata=myform['feedbackdata']
+
+			qs=Course.objects.get(code=coursecode).feedbackforms.get(name=feedbackname).questions.all()
+			r1=Response(rating='1')
+			r2=Response(rating='2')
+			r3=Response(rating='3')
+			r4=Response(rating='4')
+			r5=Response(rating='5')
+			r1.save()
+			r2.save()
+			r3.save()
+			r4.save()
+			r5.save()
+			r=[r1,r2,r3,r4,r5]
+
+			for i in range(len(list(qs))):
+				qs[i].responses.add(r[int(feedbackdata[i])-1])
+			return JsonResponse('saved', safe=False)
+		else:
+			# return render(request, 'blankMessage.html',{"message":'Error in input'})
+			return JsonResponse('Invalid Input try again', safe=False)
+	else:
+			# return render(request, 'blankMessage.html',{"message":'Connection problem'})
+			return JsonResponse('error try again', safe=False)
+
+def viewallresponseof(request, coursecode ,feedbackname):
+	# if request.user.is_authenticated==False:
+	# 	return render(request, 'blankMessage.html',{"message":'forbidden.'})
+
+	feedback=Course.objects.get(code=coursecode).feedbackforms.get(name=feedbackname)
+	return render(request, 'viewallresponse.html',{"feedback":feedback})
