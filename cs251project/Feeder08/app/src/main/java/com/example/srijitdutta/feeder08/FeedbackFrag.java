@@ -46,6 +46,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class FeedbackFrag extends Fragment{
 
     LinearLayout layout;String response;JSONArray json_array_of_ques;String final_response="";RadioGroup rg_arr[];
+    EditText ed_arr[];
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class FeedbackFrag extends Fragment{
         for(int i =0; i < options.length; i++)
         {
             RadioButton radioButtonView = new RadioButton(getContext());
+            radioButtonView.setId(i);
             radioButtonView.setOnClickListener(mThisButtonListener);
             radioButtonView.setText(options[i]);
             rg_arr[k].addView(radioButtonView, p);
@@ -93,12 +95,13 @@ public class FeedbackFrag extends Fragment{
         }
     };
     ///////////edit text field/////////////
-    private EditText editText(String ques)
+    private EditText editText(String ques,int id,int k)
     {
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        final EditText ed=new EditText(getContext());
-        ed.setLayoutParams(p);
-        ed.setHint("Your Response");
+        ed_arr[k] = new EditText(getContext());
+        ed_arr[k].setLayoutParams(p);
+        ed_arr[k].setHint("Your Response");
+        ed_arr[k].setId(id);
 
         TextView tv=new TextView(getContext());
         tv.setLayoutParams(p);
@@ -109,7 +112,7 @@ public class FeedbackFrag extends Fragment{
 
 //        layout.addView(ed);
 
-        return ed;
+        return ed_arr[k];
     }
 
     @Override
@@ -183,11 +186,17 @@ public class FeedbackFrag extends Fragment{
                 JSONObject jsonObject = new JSONObject(result);
                 json_array_of_ques = jsonObject.getJSONArray("questions");
                 rg_arr=new RadioGroup[json_array_of_ques.length()];
+                ed_arr=new EditText[json_array_of_ques.length()];
                 for(int i=0;i< json_array_of_ques.length() ;i++)
                 {
                     JSONObject obj_tmp = json_array_of_ques.getJSONObject(i);
                     String question = obj_tmp.getString("text");
-                    layout.addView(radioGroup(question,i,i));
+                    if(question.endsWith("$#$")) {
+                        question=question.substring(0,question.indexOf("$#$"));
+                        layout.addView(editText(question,i,i));
+                    }
+                    else
+                        layout.addView(radioGroup(question,i,i));
 
                 }
                 layout.addView(button("a",5));
@@ -236,18 +245,30 @@ public class FeedbackFrag extends Fragment{
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            for(int hh=0;hh<json_array_of_ques.length();hh++)
-            {
-                final_response+=(((rg_arr[hh].getCheckedRadioButtonId()-1)%5)+1)+"#";
-            }
-                final_response.substring(0,final_response.length()-1);
-                //Toast.makeText(getContext(), final_response,Toast.LENGTH_LONG).show();
-                new SendPostRequest1().execute();
-                Fragment fragment = new FeedbackListFrag();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame,fragment);
-                ft.addToBackStack(null);
-                ft.commit();
+//            for(int hh=0;hh<json_array_of_ques.length();hh++)
+//            {
+//                final_response+=(rg_arr[hh].getCheckedRadioButtonId()+1)+"#";
+//            }
+                try {
+                    for (int i = 0; i < json_array_of_ques.length(); i++)
+                    {
+                        JSONObject obj_tmp = json_array_of_ques.getJSONObject(i);
+                        String question = obj_tmp.getString("text");
+                        if (question.indexOf("$#$") >= 0) {
+                            final_response+=(ed_arr[i].getText().toString())+"#";
+                        } else
+                            final_response+=(rg_arr[i].getCheckedRadioButtonId()+1)+"#";
+                    }
+                    final_response.substring(0, final_response.length() - 1);
+                    //Toast.makeText(getContext(), final_response, Toast.LENGTH_LONG).show();
+                    new SendPostRequest1().execute();
+                    Fragment fragment = new FeedbackListFrag();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.content_frame, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                }
+                catch (Exception e){}
             }
 
         });
