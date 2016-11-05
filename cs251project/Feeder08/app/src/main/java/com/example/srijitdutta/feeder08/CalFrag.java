@@ -90,14 +90,15 @@ public class CalFrag extends Fragment {
         {
             EventDecorator evd=new EventDecorator(0,Events);
             boolean chec=evd.shouldDecorate(date);
-            Snackbar snackbar=Snackbar.make(getView(),"Event 1 \nEvent 2 \nEvent 3 ", Snackbar.LENGTH_LONG).
+            Snackbar snackbar=Snackbar.make(getView(),"midsem\nendsem ", Snackbar.LENGTH_LONG).
                     setActionTextColor(Color.GREEN).setAction("EXPAND", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
                             Dialog dialog=new Dialog(getContext());
                             dialog.setContentView(R.layout.pop_up_event);
-                            String str_to_dialog="Event";
+                            String str_to_dialog="midsem\n" +
+                                    "endsem";
                             dialog.addContentView(tw(str_to_dialog),layoutParams);
                             dialog.show();
                         }
@@ -144,7 +145,7 @@ public class CalFrag extends Fragment {
 
         @Override
         public void decorate(DayViewFacade view) {
-            float radius=5;
+            float radius=8;
             view.addSpan(new DotSpan(radius,Color.RED));
         }
     }
