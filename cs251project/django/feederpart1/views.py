@@ -299,7 +299,7 @@ def addassignment(request):
 			coursecode=myform['coursecode'] 
 			assignmentname=myform['assignmentname']
 			assignmentdeadline=myform['assignmentdeadline']
-			deadline=datetime.strptime(assignmentdeadline, "%d-%m-%Y %H:%M")
+			deadline=datetime.datetime.strptime(assignmentdeadline, "%Y-%m-%dT%H:%M")
 			a=Assignment(
 				name=assignmentname,
 				deadline=deadline
@@ -381,7 +381,7 @@ def sentfeedback(request):
 			# return render(request, 'blankMessage.html',{"message":'Connection problem'})
 			return JsonResponse('error try again', safe=False)
 
-def viewallresponseof(request):
+def viewallresponse(request):
 	if request.user.is_authenticated==False:
 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 	coursecode='none'
@@ -393,13 +393,13 @@ def viewallresponseof(request):
 			coursecode=myform['coursecode']
 			feedbackname=myform['feedbackname']
 			feedback=Course.objects.get(code=coursecode).feedbackforms.filter(name=feedbackname)[0]
-			return render(request, 'viewallresponse.html',{"feedback":feedback})
+			return render(request, 'viewallresponse.html',{"feedback":feedback,"coursename":Course.objects.get(code=coursecode).name})
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:
 			return render(request, 'blankMessage.html',{"message":'Connection problem.'})
 
-def viewalldeadlineof(request):
+def viewalldeadline(request):
 	if request.user.is_authenticated==False:
 		return render(request, 'blankMessage.html',{"message":'forbidden.'})
 
@@ -417,10 +417,10 @@ def viewalldeadlineof(request):
 			pastfeedbacks=course.feedbackforms.exclude(deadline__gte = td)
 			return render(request, 'viewassigndeadline.html',{	"course":course,
 																"futureassignments":futureassignments,
-														"pastassignments":pastassignments,
-														"futurefeedbacks":futurefeedbacks,
-														"pastfeedbacks":pastfeedbacks
-														})
+																"pastassignments":pastassignments,
+																"futurefeedbacks":futurefeedbacks,
+																"pastfeedbacks":pastfeedbacks
+																})
 		else:
 			return render(request, 'blankMessage.html',{"message":'Error in input'})
 	else:

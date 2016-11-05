@@ -23,8 +23,8 @@ urlpatterns = [
 
 	url(r'^addfeedback/', csrf_exempt(addfeedback), name='addfeedback'),
 	# url(r'^feedbackof/(\w+)/(\w+)/', editfeedback, name = 'editfeedback'),
-	url(r'^viewallresponseof/(\w+)/(\w+)/', viewallresponseof, name = 'viewallresponseof'),
-	url(r'^viewalldeadlineof/(\w+)/', viewalldeadlineof, name = 'viewalldeadlineof'),
+	url(r'^viewallresponse/', viewallresponse, name = 'viewallresponse'),
+	url(r'^viewalldeadline/', viewalldeadline, name = 'viewalldeadline'),
 
 	url(r'^studentlogin/', csrf_exempt(studentlogin), name='studentlogin'),
 	url(r'^sentfeedback/', csrf_exempt(sentfeedback), name='sentfeedback'),
