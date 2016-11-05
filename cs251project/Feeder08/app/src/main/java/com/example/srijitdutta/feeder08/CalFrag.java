@@ -174,7 +174,7 @@ public class CalFrag extends Fragment {
 
         protected String doInBackground(String... arg0) {
             String roll=SaveSharedPreference.getUserName(getContext());//MainActivity.user1;
-            String uril="http://192.168.0.104:8008/feeder/"+"getstudentdata/"+roll+"/";
+            String uril="http://10.0.2.2:8008/feeder/"+"getstudentdata/"+roll+"/";
             try {
 
                 URL url = new URL(uril); // here is your URL path

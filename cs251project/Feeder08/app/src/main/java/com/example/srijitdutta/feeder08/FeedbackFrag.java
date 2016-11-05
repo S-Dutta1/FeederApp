@@ -133,7 +133,7 @@ public class FeedbackFrag extends Fragment{
         protected String doInBackground(String... arg0) {
 
             String cc=CourseFrag.selected_course;String feedname=FeedbackListFrag.feedback_name;
-            String uril="http://192.168.0.104:8008/feeder/"+"getquestions/"+cc+"/"+feedname+"/";
+            String uril="http://10.0.2.2:8008/feeder/"+"getquestions/"+cc+"/"+feedname+"/";
             try {
 
                 URL url = new URL(uril); // here is your URL path
@@ -284,7 +284,7 @@ public class FeedbackFrag extends Fragment{
 
         protected String doInBackground(String... arg0) {
 
-            String uril="http://192.168.0.104:8008/feeder/sentfeedback/";
+            String uril="http://10.0.2.2:8008/feeder/sentfeedback/";
             try {
 
                 URL url = new URL(uril); // here is your URL path
