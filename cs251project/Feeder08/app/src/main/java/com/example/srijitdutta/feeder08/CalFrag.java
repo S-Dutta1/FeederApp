@@ -45,26 +45,31 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
 
 public class CalFrag extends Fragment {
     MaterialCalendarView materialCalendarView;
-    static JSONArray json_array_of_course;
+    static JSONArray json_array_of_course;int year,month,day;int k=1;
+    List<CalendarDay> Events= new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         View view=inflater.inflate(R.layout.calfrag, container, false);
+
         materialCalendarView=(MaterialCalendarView)view.findViewById(R.id.calendarView);
         materialCalendarView.setOnDateChangedListener(new Clickdate());
-        materialCalendarView.addDecorator(new EventDecorator(Color.RED));//set color for dots
+
         materialCalendarView.addDecorator(new OneDayDecorator());
         new SendPostRequest().execute();
         return(view);
@@ -83,7 +88,7 @@ public class CalFrag extends Fragment {
         @Override
         public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected)
         {
-            EventDecorator evd=new EventDecorator(0);
+            EventDecorator evd=new EventDecorator(0,Events);
             boolean chec=evd.shouldDecorate(date);
             Snackbar snackbar=Snackbar.make(getView(),"Event 1 \nEvent 2 \nEvent 3 ", Snackbar.LENGTH_LONG).
                     setActionTextColor(Color.GREEN).setAction("EXPAND", new View.OnClickListener() {
@@ -125,23 +130,22 @@ public class CalFrag extends Fragment {
     public class EventDecorator implements DayViewDecorator {
 
         private final int color;
-        //private final HashSet<CalendarDay> dates;
+        private final HashSet<CalendarDay> dates;
 
-        public EventDecorator(int color) {
+        public EventDecorator(int color,Collection<CalendarDay> dates) {
             this.color = color;
-            //this.dates =i;
+            this.dates = new HashSet<>(dates);
         }
 
         @Override
         public boolean shouldDecorate(CalendarDay day) {
-            int k=day.getDay();
-            return (k%5==0);
+            return dates.contains(day);
         }
 
         @Override
         public void decorate(DayViewFacade view) {
             float radius=5;
-            view.addSpan(new DotSpan(radius,color));
+            view.addSpan(new DotSpan(radius,Color.RED));
         }
     }
     ////////////////mark today////////////////////
@@ -169,7 +173,7 @@ public class CalFrag extends Fragment {
 
         protected String doInBackground(String... arg0) {
             String roll=SaveSharedPreference.getUserName(getContext());//MainActivity.user1;
-            String uril="http://10.5.41.211:8008/feeder/"+"getstudentdata/"+roll+"/";
+            String uril="http://192.168.0.104:8008/feeder/"+"getstudentdata/"+roll+"/";
             try {
 
                 URL url = new URL(uril); // here is your URL path
@@ -229,15 +233,37 @@ public class CalFrag extends Fragment {
                     JSONObject obj_course = json_array_of_course.getJSONObject(i);
                     String coursecode = obj_course.getString("coursecode");
                     //Toast.makeText(getContext(), coursecode, Toast.LENGTH_LONG).show();
-                    JSONArray feedback_deadlines = obj_course.getJSONArray("feedbackforms");
-                    for(int j=0;i<feedback_deadlines.length();j++)
+                    JSONArray assgn_deadlines = obj_course.getJSONArray("assignments");
+                    for(int j=0;j<assgn_deadlines.length();j++)
                     {
-                        JSONObject feedc=feedback_deadlines.getJSONObject(j);
+                        JSONObject feedc=assgn_deadlines.getJSONObject(j);
                         String dead=feedc.getString("deadline");
                         //Toast.makeText(getContext(), dead, Toast.LENGTH_LONG).show();
+                        dead=dead.substring(0,dead.indexOf('T'));
+                        year=Integer.parseInt(dead.substring(0,dead.indexOf('-')));//year set
+                        month=Integer.parseInt(dead.substring(dead.indexOf('-')+1,dead.lastIndexOf('-')));//month set
+                        day=Integer.parseInt(dead.substring(dead.lastIndexOf('-')+1));
+                        String d=(year+"  "+month+"   "+day);
+                        //Toast.makeText(getContext(), d, Toast.LENGTH_LONG).show();
+                        Events.add(CalendarDay.from(year,month-1,day));
                     }
-                }
+                    JSONArray feedback_deadlines = obj_course.getJSONArray("feedbackforms");
+                    for(int j=0;j<feedback_deadlines.length();j++)
+                    {
+                        JSONObject feedcd=feedback_deadlines.getJSONObject(j);
+                        String dead=feedcd.getString("deadline");
+                        //Toast.makeText(getContext(), dead, Toast.LENGTH_LONG).show();
+                        dead=dead.substring(0,dead.indexOf('T'));
+                        year=Integer.parseInt(dead.substring(0,dead.indexOf('-')));//year set
+                        month=Integer.parseInt(dead.substring(dead.indexOf('-')+1,dead.lastIndexOf('-')));//month set
+                        day=Integer.parseInt(dead.substring(dead.lastIndexOf('-')+1));
+                        String d=(year+"  "+month+"   "+day);
+                        //Toast.makeText(getContext(), d, Toast.LENGTH_LONG).show();
+                        Events.add(CalendarDay.from(year,month-1,day));
+                    }
 
+                }
+                materialCalendarView.addDecorator(new EventDecorator(Color.RED,Events));//set color for dotskk
 //                Toast.makeText(getContext(), result,
 //                        Toast.LENGTH_LONG).show();
             }

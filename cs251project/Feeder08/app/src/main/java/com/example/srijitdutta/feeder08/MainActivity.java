@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity{
 
             try {
 
-                URL url = new URL("http://10.5.41.211:8008/feeder/studentlogin/"); // here is your URL path
+                URL url = new URL("http://192.168.0.104:8008/feeder/studentlogin/"); // here is your URL path
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("rollno", user1);
