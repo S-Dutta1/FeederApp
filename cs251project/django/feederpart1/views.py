@@ -270,7 +270,7 @@ def addfeedback(request):
 			myform=myform.cleaned_data
 			coursecode=myform['coursecode'] 
 			feedbackname=myform['feedbackname']
-			# feedbackdeadline=myform['feedbackdeadline']
+			feedbackdeadline=myform['feedbackdeadline']
 
 			f=Feedbackform(
 				name=feedbackname,

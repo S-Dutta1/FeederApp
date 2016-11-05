@@ -27,7 +27,7 @@ class AddCourseForm(forms.Form):
 class AddFeedbackForm(forms.Form):
 	coursecode = forms.CharField(max_length=10,required=True)
 	feedbackname = forms.CharField(max_length=20,required=True)
-	# feedbackdeadline = forms.DateTimeField()
+	feedbackdeadline = forms.CharField(max_length=50,required=True)
 	
 class AddQuestionForm(forms.Form):
 	Qtext = forms.CharField(max_length=500,required=True)
