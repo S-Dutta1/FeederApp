@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html >
 	<head>
+		<script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
 		<link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">
 		<meta charset="utf-8">
 		<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
@@ -592,8 +593,12 @@
 		
 		{% for question in feedback.questions.all%}
 			<div class="form" style="align:right;top:-50px;">
-				<div class="forceColor"></div>
+				{# <div class="forceColor"></div> #}
 				<div class="topbar">
+					<script>
+						var fruits,fruits1;
+						fruits = [0, 0, 0, 0,0];
+					</script>
 					<div class="spanColor"></div>
 					
 					<font size="5">
@@ -607,12 +612,47 @@
 						</center>
 					</div>
 					</font>
+
 					{%for response in question.responses.all%}
+					<script >
+						fruits[parseInt({{response.rating}})-1]++;
+					</script>
 					<font size="3">
 					<div class="myhead1"> {{response.rating}} <center></center>
 					</div>
 					</font>
 				{% endfor %}
+
+				{% if question.text|slice:"-3:" != "$#$" %}
+				<script type="text/javascript">
+					window.onload = function () {
+					
+					var chart{{ question.id }} = new CanvasJS.Chart("input_{{ question.id }}", {
+					theme: "theme1",//theme11
+					title:{
+					text: "Basic Column Chart - CanvasJS"
+					},
+					animationEnabled: false,   // change to true
+					data: [
+						{
+							// Change type to "bar", "area", "spline", "pie",etc.
+							type: "column",
+								
+								dataPoints: [
+								{ label: "1", y: fruits[0]  },
+								{ label: "2", y: fruits[1]  },
+								{ label: "3", y: fruits[2]  },
+								{ label: "4", y: fruits[3]  },
+								{ label: "5", y: fruits[4]  }
+							]
+						}
+					]});
+					chart{{ question.id }}.render();
+					}
+				</script>
+				<div id="input_{{ question.id }}" style="height: 270px; width: 80%;"></div>
+				{% endif %}
+
 			</div>
 		</div>
 	{% endfor %}
