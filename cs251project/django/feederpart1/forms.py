@@ -31,6 +31,8 @@ class AddFeedbackForm(forms.Form):
 	
 class AddQuestionForm(forms.Form):
 	Qtext = forms.CharField(max_length=500,required=True)
+	CHOICES = (('1', 'ch1',), ('2', 'ch2',))
+	Qtype = forms.CharField(max_length=20,required=True)
 
 class AddAssignmentForm(forms.Form):
 	coursecode = forms.CharField(max_length=10,required=True)

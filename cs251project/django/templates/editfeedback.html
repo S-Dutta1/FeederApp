@@ -495,6 +495,11 @@
     color: rgba(255, 255, 255, 0.4);
     padding: 10px 20px;
     }
+    .login input[type=radio]{
+    width: 10px;
+    height: 10px;
+    font size: 30px;
+    }
     .login input[type=text]:focus{
     outline: none;
     border: 1px solid rgba(255,255,255,0.9);
@@ -525,9 +530,11 @@
     
     
   </head>
-  <body><a href="{% url 'logout' %}">
-    <button class="fill" style=" height: 48px;
-    width: 70px;border-radius: 17px;left:1000px;position:relative;" ><span class=" glyphicon glyphicon-log-out"></span></button></a>
+  <body>
+    <a href="{% url 'userhome' %}">
+      <button class="fill" style=" height: 48px;
+      width: 70px;border-radius: 17px;left:1000px;position:relative;" ><span class=" glyphicon glyphicon-log-out"></span></button>
+    </a>
     <div class="myhead" style=" top :-65px;"><font size="8" ><center>{{feedbackname}}</center></font> </div>
     {% for question in questions %}
       
@@ -537,7 +544,14 @@
         <div class="topbar">
           <div class="spanColor"></div>
           <!--     <input type="Text" class="input" id="Text" placeholder="Enter Feedback" name="username"/> -->
-          <div class="myhead1" style="left:5px;"><font size="4" >{{question.text}}</font> </div>
+          <div class="myhead1" style="left:5px;">
+            <font size="4" >
+            {% if question.text|slice:"-3:" == "$#$" %}
+              {{ question.text|slice:":-3" }}
+              {%else%}
+              {{ question.text}}
+            {% endif %}
+          </font> </div>
           
           
           <!--  <a href="#popup1" style="text-decoration:none;"><button class="fill" >Assign Deadline</button></a><br>
@@ -570,9 +584,11 @@
         <div class="login">
           <div class="popup">
             <input type="Text"   placeholder="Enter your question were"  name="Qtext" style="width:650px" />
-            
-            <!--  <input type="Text"   placeholder="Enter Deadline" name="date" style="width:650px"/> -->
-            
+            <select name="Qtype">
+              <option value="ch1">Rating type</option>
+              <option value="ch2">Question types</option>
+            </select>
+            <br>
             
             <a href="{% url 'userhome' %}">
               <button  class="fill" style="left: 190px;">Done</button>

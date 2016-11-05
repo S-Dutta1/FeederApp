@@ -582,7 +582,6 @@
 		
 		
 		
-
 	</head>
 	<body>
 		<a href="{% url 'userhome' %}">
@@ -597,22 +596,26 @@
 				<div class="topbar">
 					<div class="spanColor"></div>
 					
-					<font size="5"><div class="myhead1"><center>{{question.text}}</center></div></font>
+					<font size="5">
+					<div class="myhead1">
+						<center>
+						{% if question.text|slice:"-3:" == "$#$" %}
+							{{ question.text|slice:":-3" }}
+							{%else%}
+							{{ question.text}}
+						{% endif %}
+						</center>
+					</div>
+					</font>
 					{%for response in question.responses.all%}
 					<font size="3">
 					<div class="myhead1"> {{response.rating}} <center></center>
 					</div>
 					</font>
-					{% endfor %}
+				{% endfor %}
 			</div>
 		</div>
 	{% endfor %}
-	
-	
-	
-	
-	
-	
 	<!-- <script src="js/index.js"></script> -->
 </body>
 </html>
