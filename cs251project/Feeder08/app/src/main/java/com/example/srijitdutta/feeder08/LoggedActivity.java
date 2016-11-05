@@ -137,9 +137,9 @@ public class LoggedActivity extends AppCompatActivity
             case R.id.nav_courses:
                 fragment = new CourseFrag();
                 break;
-            case R.id.nav_feedback:
-                fragment = new FeedbackFrag();
-                break;
+//            case R.id.nav_feedback:
+//                fragment = new FeedbackFrag();
+//                break;
             case R.id.nav_logout:
                 SaveSharedPreference.clearUserName(LoggedActivity.this);
                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);

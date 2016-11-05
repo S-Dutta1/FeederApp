@@ -238,8 +238,9 @@ public class FeedbackFrag extends Fragment{
             public void onClick(View v) {
             for(int hh=0;hh<json_array_of_ques.length();hh++)
             {
-                final_response+=((rg_arr[hh].getCheckedRadioButtonId()-1)%5)+1;
+                final_response+=(((rg_arr[hh].getCheckedRadioButtonId()-1)%5)+1)+"#";
             }
+                final_response.substring(0,final_response.length()-1);
                 //Toast.makeText(getContext(), final_response,Toast.LENGTH_LONG).show();
                 new SendPostRequest1().execute();
                 Fragment fragment = new FeedbackListFrag();
