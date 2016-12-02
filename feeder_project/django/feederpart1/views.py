@@ -44,7 +44,7 @@ def studentlogin(request):
 			return JsonResponse('error.', safe=False)
 
 	# request.user.is_authenticated
-	# u=request.user
+	
 
 def Logout(request):
 	logout(request)
